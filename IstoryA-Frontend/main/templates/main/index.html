@@ -1,0 +1,65 @@
+{% load static %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="UTF-8">
+    <title> IstoryA - Home </title>
+    <link href="{% static 'main//vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'main/css/home.css' %}">
+
+</head>
+<body>
+
+    <div class="shadow-title parallax-top-shadow">IstoryA</div>
+
+    <div class="content_login content_login_first_generation">
+        <a href="login"><span>Login</span></a>
+        <a href="register"><span>Sign Up</span></a>
+    </div>
+
+    <div class="section full-height">
+        <div class="section-typing parallax-fade-top">
+            <h1 class="heading" data-target-resolver></h1>
+            <form method="POST" id="get_text_generation" action="{% url 'index' %}">
+                {% csrf_token %}
+                <h2 class="Subtitle">Select your genre</h2>
+                {{ form.as_p }}
+                <div class="content_login content_login_first_generation">
+                    <button type="submit" name="submit" value="Submit" id="submit" type="button" >Launch</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="grid-pulse">
+            <div class="div-pulse"></div>
+            <div class="div-pulse"></div>
+            <div class="div-pulse"></div>
+            <div class="div-pulse"></div>
+            <div class="div-pulse"></div>
+            <div class="div-pulse"></div>
+            <div class="div-pulse"></div>
+            <div class="div-pulse"></div>
+            <div class="div-pulse"></div>
+        </div>
+    </div>
+
+      </ul>
+
+    <!-- Scroll back to top
+    ================================================== -->
+
+    <div class="scroll-to-top hover-target"></div>
+
+</body>
+</html>
+
+    <script type="text/javascript" src="{% static 'main/js/jquery.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'main//vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'main/js/home_text_typing.js' %}"></script>
+    <script src="{% static 'main/js/home.js' %}"></script>
+
+{% endblock %}

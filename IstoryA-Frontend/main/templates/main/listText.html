@@ -1,0 +1,6 @@
+{% for text, id  in list_text_and_id %}
+    <div class="text_case">
+        <span class="badge badge-secondary base" id="{{ id }}" draggable="true"><span class="badge badge-light">{{ id }}</span></span>
+        <span class="badge badge-secondary base" id="getText{{ id }}" style="width: 33vw;">{{ text }}<span class="badge badge-light" style="margin-left: 5px;">{{ id }}</span></span>
+    </div>
+{% endfor %}

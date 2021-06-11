@@ -1,0 +1,6 @@
+db.sqlite3
+Save
+.idea
+checkpoint
+__pycache__
+migrations

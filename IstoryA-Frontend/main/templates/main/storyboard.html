@@ -1,0 +1,166 @@
+{% load static %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="UTF-8">
+    <title> IstoryA - Home </title>
+    <link href="{% static 'main//vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'main/css/home.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+
+</head>
+
+<body>
+
+   <div class="shadow-title parallax-top-shadow">IstoryA</div>
+
+   <h1 class="title_list_storyboard_home">{{ current_storyboard.name }}</h1>
+   <div class="line line_title_list_storyboard_home"></div>
+
+      <div class="content_login ">
+           <a href="{{ update_storyboard_path }}" style=" position: fixed; top: 10vh; right: 4vw;"><span>Edit Storyboard</span></a>
+           <a href="{{ update_name_path }}" style=" position: fixed; top: 15vh; right: 4vw;" data-toggle="modal" data-target="#change_name"><span>Edit name</span></a>
+           <a href="{{ update_name_path }}" style=" position: fixed; top: 20vh; right: 4vw;" data-toggle="modal" data-target="#publish_story"><span>Publish</span></a>
+           <a href="{{ delete_storyboard_path }}" style=" position: fixed; top: 25vh; right: 4vw;"><span>Delete</span></a>
+      </div>
+
+   <div id="carouselExampleIndicators" class="carousel slide slide_storyboard" data-ride="carousel">
+      <ol class="carousel-indicators">
+        {% for case in current_storyboard_length %}
+            {% if forloop.first %}<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>{% endif %}
+            {% if not forloop.first %}<li data-target="#carouselExampleIndicators" data-slide-to="{{ case }}"></li>{% endif %}
+        {% endfor %}
+      </ol>
+      <div class="carousel-inner">
+         {% for case in current_storyboard_length %}
+            {% if forloop.first %}<div class="carousel-item active">{% endif %}
+            {% if not forloop.first %}<div class="carousel-item">{% endif %}
+              <img class="picture_storyboard" src="{% static 'main//pictures/1/1.png' %}" alt="">
+              <div class="carousel-caption">
+              {% for key, value in list_text_save_and_case_id.items %}
+                {% if case == key %}
+                   <p class="text_storyboard">{{ value }}</p>
+                {% endif %}
+              {% endfor %}
+              </div>
+            </div>
+         {% endfor %}
+      </div>
+      <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
+
+    <div class="scroll-to-top hover-target"></div>
+
+   <!-- Modal -->
+    <div class="modal fade" id="change_name" tabindex="-1" role="dialog" aria-labelledby="change_nameLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="change_nameLabel" style="color: black">Generate Storyboard</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label>Enter a new name for your storyboard</label>
+                        {{ formChangeName.newNameStoryboard }}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="closeAddVideoChoiceP" data-dismiss="modal">Fermer</button>
+                    <button type="submit" name="submit" value="Submit" id="submit" type="button" class="btn btn-primary">Generate</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+      <!-- Modal 2 -->
+    <div class="modal fade" id="publish_story" tabindex="-1" role="dialog" aria-labelledby="publish_storyLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="publish_storyLabel" style="color: black">Publish your Storyboard</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label>Enter a message (max = 256 characters)</label>
+                        {{ formPublishStoryboard.messagetoryboard }}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="closeAddVideoChoiceP" data-dismiss="modal">Fermer</button>
+                    <button type="submit" name="submit" value="Submit" id="submit" type="button" class="btn btn-primary">Publish</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <style>
+       .slide_storyboard {
+            margin-top: 50px;
+            width: 70vw;
+            height: 70vh;
+            position: relative;
+            margin-left: auto;
+            margin-right: auto;
+       }
+
+       .carousel-caption {
+           position: relative;
+           right: 0 !important;
+           left: 0 !important;
+           bottom: -30px;
+           margin-right: auto;
+           margin-left: auto;
+           z-index: 10;
+           padding-top: 20px;
+           padding-bottom: 20px;
+           color: #fff;
+           text-align: center;
+           height: 300px;
+           padding-left: 10vw;
+           padding-right: 10vw;
+       }
+
+       .picture_storyboard {
+           position: relative;
+           transform: translate(-50%, 0%);
+           left: 50%;
+       }
+
+       .text_storyboard{
+           font-size: 2vh;
+       }
+    </style>
+
+</body>
+</html>
+
+    <script type="text/javascript" src="{% static 'main/js/jquery.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'main//vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+{% endblock %}
