@@ -4,3 +4,5 @@ Save
 checkpoint
 __pycache__
 migrations
+Image-generator-server/data/*
+.ipynb_checkpoints
