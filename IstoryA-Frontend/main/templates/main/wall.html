@@ -18,6 +18,10 @@
 
 <body>
 
+    <div class="loader-wrapper">
+        <span class="loader"><span class="loader-inner"></span></span>
+    </div>
+
    <div class="shadow-title parallax-top-shadow">IstoryA</div>
 
    <h1 class="title_list_storyboard_home">IstoryA's Wall</h1>
@@ -25,7 +29,7 @@
 
     <div class="content_login ">
        <a href="/home" style=" position: fixed; top: 10vh; right: 4vw;"><span>Home</span></a>
-       <a href="/logout" style=" position: fixed; top: 15vh; right: 4vw;"><span>Logout</span></a>
+       <a href="" data-toggle="modal" data-target="#logout" style=" position: fixed; top: 15vh; right: 4vw;"><span>Logout</span></a>
     </div>
 
     <div class="storyboard_list_home">
@@ -85,10 +89,31 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" id="closeAddVideoChoiceP" data-dismiss="modal">Fermer</button>
-                    <button type="submit" name="submit" value="Submit" id="submit" type="button" class="btn btn-primary">Generate</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                    <button type="submit" name="submit" type="button" class="btn btn-primary">Generate</button>
                 </div>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 2 -->
+    <div class="modal fade" id="logout" tabindex="-1" role="dialog" aria-labelledby="logoutLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="logoutLabel" style="color: black">Logout</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="color: black">
+                     <p>Do you want to disconnect ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                    <a href="/logout" type="button" class="btn btn-danger">Logout</a>
+                </div>
             </div>
         </div>
     </div>
@@ -120,5 +145,6 @@
             document.location.reload();
         }
     </script>
+    <script src="{% static 'main/js/animation.js' %}"></script>
 
 {% endblock %}

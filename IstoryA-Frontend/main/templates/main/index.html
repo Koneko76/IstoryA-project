@@ -1,5 +1,4 @@
 {% load static %}
-
 {% block content %}
 
 <!DOCTYPE html>
@@ -13,6 +12,10 @@
 
 </head>
 <body>
+
+    <div class="loader-wrapper">
+        <span class="loader"><span class="loader-inner"></span></span>
+    </div>
 
     <div class="shadow-title parallax-top-shadow">IstoryA</div>
 
@@ -29,7 +32,7 @@
                 <h2 class="Subtitle">Select your genre</h2>
                 {{ form.as_p }}
                 <div class="content_login content_login_first_generation">
-                    <button type="submit" name="submit" value="Submit" id="submit" type="button" >Launch</button>
+                    <button type="submit" name="submit" id="submit" type="button" >Launch</button>
                 </div>
             </form>
         </div>
@@ -61,5 +64,6 @@
     <script type="text/javascript" src="{% static 'main//vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'main/js/home_text_typing.js' %}"></script>
     <script src="{% static 'main/js/home.js' %}"></script>
+    <script src="{% static 'main/js/animation.js' %}"></script>
 
 {% endblock %}
