@@ -1224,6 +1224,16 @@ a:hover {
     margin-top: 100px;
   }
 
+  .line_create_page {
+    width: 20vw;
+    height: 2px;
+    border-bottom: white 2px solid;
+    position: relative;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 75px;
+  }
+
   .content_login_first_generation{
       text-align: center;
   }
@@ -1243,6 +1253,7 @@ a:hover {
        transition: 0.5s;
        transition-delay: 0s;
        z-index: 100;
+       font-size: 1.2vh;
    }
 
    .content_login a:hover
@@ -1460,7 +1471,7 @@ a:hover {
 
     .storyboard_case {
         width: 19vw;
-        height: 60vh;
+        height: 50vh;
         border: solid white 2px;
         margin: 25px;
     }
@@ -1477,6 +1488,7 @@ a:hover {
     .storyboard_picture {
         height: 75%;
         border-bottom: solid white 2px;
+        padding: 15px;
     }
 
     #text_generation {
@@ -1527,9 +1539,10 @@ a:hover {
 
     .regen{
         font-size: 2vh;
-        position: fixed;
         right: 4vw;
-        margin-top: 5vh;
+        margin-top: 0.3vh;
+        z-index: 100;
+        cursor: pointer;
     }
 
     .storyboard_text_home {
@@ -1567,6 +1580,13 @@ a:hover {
         position: relative;
     }
 
+    .title_create_page {
+        text-align: center;
+        font-size: 2.5vh;
+        top: 4vh;
+        position: relative;
+    }
+
     .line_title_list_storyboard_home
     {
         width: 30vw;
@@ -1598,8 +1618,8 @@ a:hover {
     }
 
     .card__image {
-      width: 100%;
-      height: auto;
+        width: 100%;
+        height: auto;
     }
 
     .card__overlay {
@@ -1726,8 +1746,87 @@ a:hover {
         height: 200px;
     }
 
+    .generate_form{
+        top: -38px;
+        position: relative;
+    }
 
+    #text_generation::-webkit-scrollbar{
+        display: none;
+    }
 
+    .loader-wrapper {
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: #242f3f;
+      display:flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
 
+    .loader {
+      display: inline-block;
+      width: 90px;
+      height: 90px;
+      position: relative;
+      border: 4px solid #Fff;
+      animation: loader 2s infinite ease;
+      z-index: 1000;
+    }
 
+    .loader-inner {
+      vertical-align: top;
+      display: inline-block;
+      width: 100%;
+      background-color: #fff;
+      animation: loader-inner 2s infinite ease-in;
+    }
+
+    @keyframes loader {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      25% {
+        transform: rotate(180deg);
+      }
+
+      50% {
+        transform: rotate(180deg);
+      }
+
+      75% {
+        transform: rotate(360deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes loader-inner {
+      0% {
+        height: 0%;
+      }
+
+      25% {
+        height: 0%;
+      }
+
+      50% {
+        height: 100%;
+      }
+
+      75% {
+        height: 100%;
+      }
+
+      100% {
+        height: 0%;
+      }
+    }
 

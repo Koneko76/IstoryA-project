@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-*%m*+h_i&*=79pk&c1y)_je7rxv&&h*vguxo2*93-y(3$(kr($
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.1.16', '127.0.0.1']
 
 # Application definition
 
@@ -108,7 +108,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'Europe/Istanbul'
+TIME_ZONE = 'Europe/Paris'
 
 USE_I18N = True
 

@@ -37,12 +37,15 @@ urlpatterns = [
     path('update_case_storyboard/', views.UpdateCaseStoryboard, name="update_case_storyboard"),
     path('update_case_order_storyboard/', views.UpdateCaseOrderStoryboard, name="update_case_order_storyboard"),
     path('update_list_text', views.updateListText, name="update_list_text"),
+    path('update_list_picture', views.updateListPicture, name="update_list_picture"),
     path('fav_storyboard_home/<int:id>', views.favStoryboardHome, name="fav_storyboard_home"),
     path('get_text_by_id/', views.getTextByID, name="get_text_by_id"),
     path('fav_storyboard_publication/<int:id>', views.favStoryboardPublication, name="fav_storyboard_home"),
     path('like_storyboard_publication/<int:id>', views.likeStoryboardPublication, name="like_storyboard_home"),
     path('change_list_create_storyboard/', views.indexListCreateStoryboard, name="change_list_create_storyboard"),
     path('sup/', views.sup, name="sup"),
+    path('create_picture/', views.createPicture, name="create_picture"),
+    path('update_picture_by_flask/', views.updatePictureByFlask, name="update_picture_by_flask"),
 ]
 
 if settings.DEBUG:

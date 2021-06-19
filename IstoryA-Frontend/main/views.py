@@ -9,24 +9,42 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 import tensorflow as tf
 import re
-from main.models import storyboard, storyboard_text, storyboard_publications
+from main.models import storyboard, storyboard_text, storyboard_publications, storyboard_picture
 from django.utils import timezone
 from django.contrib.auth.models import User
 import json
+import base64
+from django.views.decorators.csrf import csrf_exempt
+from io import BytesIO
 
 fs = FileSystemStorage()
 path = fs.path("main/static/main/checkpoint")
+
+def remove_last_sentence(text):
+    text = text.split(".")
+    del text[-1]
+    text = ".".join(text)
+    text = text + "."
+    return text
 
 def index(request):
     form = createStory(request.POST or None)
     if form.is_valid():
         print(form.cleaned_data["startStory"])
         print(form.cleaned_data["typeStory"])
+        genre = form.cleaned_data["typeStory"]
+        if genre == "Fantasy":
+            path_run = "run1-fantasy-124M"
+        elif genre == "Romance":
+            path_run = "run1-romance-124M"
+        else:
+            path_run = "run1-fantasy-124M"
+
         tf.reset_default_graph()
         sess = gpt2.start_tf_sess()
-        gpt2.load_gpt2(sess, checkpoint_dir=path, run_name='run1')
-        result = gpt2.generate(sess, checkpoint_dir=path, run_name='run1', prefix=form.cleaned_data["startStory"], return_as_list=True, length=512, truncate="...")[0]
-        print(result)
+        gpt2.load_gpt2(sess, checkpoint_dir=path, run_name=path_run)
+        result = gpt2.generate(sess, checkpoint_dir=path, run_name=path_run, prefix=form.cleaned_data["startStory"], return_as_list=True, length=512)[0]
+        result = remove_last_sentence(result)
         return render(request, 'main/first_text_generation.html', locals())
 
     template = loader.get_template('main/index.html')
@@ -88,8 +106,18 @@ def homePage(request):
             lengthStory = 512;
         tf.reset_default_graph()
         sess = gpt2.start_tf_sess()
-        gpt2.load_gpt2(sess, checkpoint_dir=path, run_name='run1')
-        result_text_generation = gpt2.generate(sess, checkpoint_dir=path, run_name='run1', prefix=form.cleaned_data["startStory"], return_as_list=True , length=lengthStory)[0]
+        genre = form.cleaned_data["typeStory"]
+        if genre == "Fantasy":
+            path_run = "run1-fantasy-124M"
+        elif genre == "Romance":
+            path_run = "run1-romance-124M"
+        else:
+            path_run = "run1-fantasy-124M"
+
+        gpt2.load_gpt2(sess, checkpoint_dir=path, run_name=path_run)
+        result_text_generation = gpt2.generate(sess, checkpoint_dir=path, run_name=path_run, prefix=form.cleaned_data["startStory"], return_as_list=True , length=lengthStory)[0]
+        print(result_text_generation)
+        result_text_generation = remove_last_sentence(result_text_generation)
         request.session['result_text_generation'] = result_text_generation
         request.session['start_text_generation'] = form.cleaned_data["startStory"]
         return render(request, 'main/validation.html', locals())
@@ -100,8 +128,18 @@ def homePage(request):
             lengthStory = 512;
         tf.reset_default_graph()
         sess = gpt2.start_tf_sess()
-        gpt2.load_gpt2(sess, checkpoint_dir=path, run_name='run1')
-        result_text_generation = gpt2.generate(sess, checkpoint_dir=path, run_name='run1', prefix=formValidation.cleaned_data["startStoryValidation"], return_as_list=True , length=lengthStory)[0]
+        genre = formValidation.cleaned_data["typeStoryValidation"]
+        if genre == "Fantasy":
+            path_run = "run1-fantasy-124M"
+        elif genre == "Romance":
+            path_run = "run1-romance-124M"
+        else:
+            path_run = "run1-fantasy-124M"
+
+        gpt2.load_gpt2(sess, checkpoint_dir=path, run_name=path_run)
+        result_text_generation = gpt2.generate(sess, checkpoint_dir=path, run_name=path_run, prefix=formValidation.cleaned_data["startStoryValidation"], return_as_list=True , length=lengthStory)[0]
+        print(result_text_generation)
+        result_text_generation = remove_last_sentence(result_text_generation)
         request.session['result_text_generation'] = result_text_generation
         request.session['start_text_generation'] = formValidation.cleaned_data["startStoryValidation"]
         return render(request, 'main/validation.html', locals())
@@ -114,7 +152,7 @@ def homePage(request):
         result_text_generation = request.session.get('result_text_generation')
         start_text_generation = request.session.get('start_text_generation')
         current_user = request.user
-        newStoryboard = storyboard(name=nameStory, length=lengthStoryboard, initial_text=result_text_generation, last_text=result_text_generation, start_text=start_text_generation, owner_id=request.user.id)
+        newStoryboard = storyboard(name=nameStory, length=lengthStoryboard, initial_text=result_text_generation, last_text=result_text_generation, start_text=start_text_generation, owner_id=request.user.id, creation_date=timezone.now(), update_date=timezone.now())
         newStoryboard.save()
         storyboard_infos = storyboard.objects.filter(name=nameStory, owner_id=request.user.id).order_by('-id')[0]
         path_render = '/create/' + str(storyboard_infos.id)
@@ -134,6 +172,9 @@ def createPage(request, id):
     list_save_text_case = []
     list_save_text_id = []
     list_tmp = []
+    list_save_picture_case = []
+    list_save_picture = []
+
     storyboard_infos = storyboard.objects.get(id=id, owner_id=request.user.id)
     storyboard_text_infos = storyboard_text.objects.filter(storyboard_id=storyboard_infos.id).order_by('case_id', 'text_order')
     for storyboard_text_infos_unit in storyboard_text_infos:
@@ -141,8 +182,16 @@ def createPage(request, id):
         list_save_text_case.append(storyboard_text_infos_unit.case_id)
         list_save_text_id.append(storyboard_text_infos_unit.id)
 
+    storyboard_pictures_infos = storyboard_picture.objects.filter(storyboard_id=id)
+    for storyboard_pictures_infos_unit in storyboard_pictures_infos:
+        list_save_picture.append(storyboard_pictures_infos_unit.picture)
+        list_save_picture_case.append(storyboard_pictures_infos_unit.case_id)
+
+    list_picture_save_and_case_id = zip(list_save_picture_case, list_save_picture)
+    list_picture_save_and_case_id = dict(list_picture_save_and_case_id)
+
     result_text_generation = storyboard_infos.last_text
-    lengthStoryboard = range(1, storyboard_infos.length)
+    lengthStoryboard = range(1, storyboard_infos.length+1)
     request.session['result_text_generation'] = result_text_generation
     list_generation_text = re.split("(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?)\s", result_text_generation)
     list_all_text = []
@@ -176,8 +225,19 @@ def createPage(request, id):
             lengthStory = 512;
         tf.reset_default_graph()
         sess = gpt2.start_tf_sess()
-        gpt2.load_gpt2(sess, checkpoint_dir=path, run_name='run1')
-        result_text_generation = gpt2.generate(sess, checkpoint_dir=path, run_name='run1', prefix=form.cleaned_data["startStory"], return_as_list=True , length=lengthStory)[0]
+        genre = form.cleaned_data["typeStory"]
+        if genre == "Fantasy":
+            path_run = "run1-fantasy-124M"
+        elif genre == "Romance":
+            path_run = "run1-romance-124M"
+        else:
+            path_run = "run1-fantasy-124M"
+
+        print(path_run)
+        gpt2.load_gpt2(sess, checkpoint_dir=path, run_name=path_run)
+        result_text_generation = gpt2.generate(sess, checkpoint_dir=path, run_name=path_run, prefix=form.cleaned_data["startStory"], return_as_list=True , length=lengthStory)[0]
+        print(result_text_generation)
+        result_text_generation = remove_last_sentence(result_text_generation)
         request.session['result_text_generation'] = result_text_generation
         list_generation_text = re.split("(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?)\s", result_text_generation)
         list_all_text = []
@@ -196,8 +256,19 @@ def createPage(request, id):
             lengthStory = 512;
         tf.reset_default_graph()
         sess = gpt2.start_tf_sess()
-        gpt2.load_gpt2(sess, checkpoint_dir=path, run_name='run1')
-        result_text_generation = gpt2.generate(sess, checkpoint_dir=path, run_name='run1', prefix=formRegenerate.cleaned_data["regenerateStartStory"], return_as_list=True , length=lengthStory)[0]
+        genre = formRegenerate.cleaned_data["regenerateTypeStory"]
+        if genre == "Fantasy":
+            path_run = "run1-fantasy-124M"
+        elif genre == "Romance":
+            path_run = "run1-romance-124M"
+        else:
+            path_run = "run1-fantasy-124M"
+
+        print(path_run)
+        gpt2.load_gpt2(sess, checkpoint_dir=path, run_name=path_run)
+        result_text_generation = gpt2.generate(sess, checkpoint_dir=path, run_name=path_run, prefix=formRegenerate.cleaned_data["regenerateStartStory"], return_as_list=True , length=lengthStory)[0]
+        print(result_text_generation)
+        result_text_generation = remove_last_sentence(result_text_generation)
         request.session['result_text_generation'] = result_text_generation
         list_generation_text = re.split("(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?)\s", result_text_generation)
         list_all_text = []
@@ -228,6 +299,9 @@ def createOrderPage(request, id):
     list_save_text_case = []
     list_save_text_id = []
     list_tmp = []
+    list_save_picture_case = []
+    list_save_picture = []
+
     storyboard_infos = storyboard.objects.get(id=id, owner_id=request.user.id)
     storyboard_text_infos = storyboard_text.objects.filter(storyboard_id=storyboard_infos.id).order_by('case_id', 'text_order')
     for storyboard_text_infos_unit in storyboard_text_infos:
@@ -235,8 +309,16 @@ def createOrderPage(request, id):
         list_save_text_case.append(storyboard_text_infos_unit.case_id)
         list_save_text_id.append(storyboard_text_infos_unit.id)
 
+    storyboard_pictures_infos = storyboard_picture.objects.filter(storyboard_id=id)
+    for storyboard_pictures_infos_unit in storyboard_pictures_infos:
+        list_save_picture.append(storyboard_pictures_infos_unit.picture)
+        list_save_picture_case.append(storyboard_pictures_infos_unit.case_id)
+
+    list_picture_save_and_case_id = zip(list_save_picture_case, list_save_picture)
+    list_picture_save_and_case_id = dict(list_picture_save_and_case_id)
+
     result_text_generation = storyboard_infos.last_text
-    lengthStoryboard = range(1, storyboard_infos.length)
+    lengthStoryboard = range(1, storyboard_infos.length+1)
     request.session['result_text_generation'] = result_text_generation
     list_generation_text = re.split("(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?)\s", result_text_generation)
     list_all_text = []
@@ -270,8 +352,19 @@ def createOrderPage(request, id):
             lengthStory = 512;
         tf.reset_default_graph()
         sess = gpt2.start_tf_sess()
-        gpt2.load_gpt2(sess, checkpoint_dir=path, run_name='run1')
-        result_text_generation = gpt2.generate(sess, checkpoint_dir=path, run_name='run1', prefix=form.cleaned_data["startStory"], return_as_list=True , length=lengthStory)[0]
+        genre = form.cleaned_data["typeStory"]
+        if genre == "Fantasy":
+            path_run = "run1-fantasy-124M"
+        elif genre == "Romance":
+            path_run = "run1-romance-124M"
+        else:
+            path_run = "run1-fantasy-124M"
+
+        print(path_run)
+        gpt2.load_gpt2(sess, checkpoint_dir=path, run_name=path_run)
+        result_text_generation = gpt2.generate(sess, checkpoint_dir=path, run_name=path_run, prefix=form.cleaned_data["startStory"], return_as_list=True , length=lengthStory)[0]
+        print(result_text_generation)
+        result_text_generation = remove_last_sentence(result_text_generation)
         request.session['result_text_generation'] = result_text_generation
         list_generation_text = re.split("(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?)\s", result_text_generation)
         list_all_text = []
@@ -290,8 +383,19 @@ def createOrderPage(request, id):
             lengthStory = 512;
         tf.reset_default_graph()
         sess = gpt2.start_tf_sess()
-        gpt2.load_gpt2(sess, checkpoint_dir=path, run_name='run1')
-        result_text_generation = gpt2.generate(sess, checkpoint_dir=path, run_name='run1', prefix=formRegenerate.cleaned_data["regenerateStartStory"], return_as_list=True , length=lengthStory)[0]
+        genre = formRegenerate.cleaned_data["regenerateTypeStory"]
+        if genre == "Fantasy":
+            path_run = "run1-fantasy-124M"
+        elif genre == "Romance":
+            path_run = "run1-romance-124M"
+        else:
+            path_run = "run1-fantasy-124M"
+
+        print(path_run)
+        gpt2.load_gpt2(sess, checkpoint_dir=path, run_name=path_run)
+        result_text_generation = gpt2.generate(sess, checkpoint_dir=path, run_name=path_run, prefix=formRegenerate.cleaned_data["regenerateStartStory"], return_as_list=True , length=lengthStory)[0]
+        print(result_text_generation)
+        result_text_generation = remove_last_sentence(result_text_generation)
         request.session['result_text_generation'] = result_text_generation
         list_generation_text = re.split("(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?)\s", result_text_generation)
         list_all_text = []
@@ -316,7 +420,6 @@ def updateStoryboard(request, id):
     result_text_generation = request.session.get('result_text_generation')
     current_storyboard = storyboard.objects.get(id=id, owner_id=request.user.id)
     current_storyboard.last_text = result_text_generation
-    print(timezone.now())
     current_storyboard.update_date = timezone.now()
     current_storyboard.save()
 
@@ -327,18 +430,40 @@ def viewStoryboard(request, id):
 
     list_save_text_case = []
     list_save_text = []
+    list_save_picture_case = []
+    list_save_picture = []
 
     current_storyboard = storyboard.objects.get(id=id, owner_id=request.user.id)
     current_storyboard_length = current_storyboard.length
     current_storyboard_length = range(1, current_storyboard_length+1)
+    current_storyboard_nb_picture = current_storyboard.length
 
     storyboard_text_infos = storyboard_text.objects.filter(storyboard_id=current_storyboard.id)
     for storyboard_text_infos_unit in storyboard_text_infos:
         list_save_text.append(storyboard_text_infos_unit.text)
         list_save_text_case.append(storyboard_text_infos_unit.case_id)
 
+    storyboard_pictures_infos = storyboard_picture.objects.filter(storyboard_id=current_storyboard.id)
+    for storyboard_pictures_infos_unit in storyboard_pictures_infos:
+        list_save_picture.append(storyboard_pictures_infos_unit.picture)
+        list_save_picture_case.append(storyboard_pictures_infos_unit.case_id)
+
     list_text_save_and_case_id = zip(list_save_text_case, list_save_text)
     list_text_save_and_case_id = dict(list_text_save_and_case_id)
+
+    list_picture_save_and_case_id = zip(list_save_picture_case, list_save_picture)
+    list_picture_save_and_case_id = dict(list_picture_save_and_case_id)
+
+    list_id_text_save = range(1, len(list_save_text_case) + 1)
+
+    dict_text = dict()
+    for case in range(1, 13):
+        dict_text[case] = []
+
+    for length in range(1, 13):
+        for case, text in zip(list_save_text_case, list_save_text):
+            if length == case:
+                dict_text[case].append(text)
 
     formChangeName = ChangeNameStoryboard(request.POST or None)
     formPublishStoryboard = PublishStoryboard(request.POST or None)
@@ -479,8 +604,9 @@ def indexListCreateStoryboard(request):
 
 def sup(request):
 
-    current_storyboard_text = storyboard_text.objects.get(id=52)
-    current_storyboard_text.delete()
+    current_storyboard_text = storyboard_text.objects.get(id=28)
+    current_storyboard_text.text = "Victorious, she is able to reach her flower shop."
+    current_storyboard_text.save()
 
     return redirect("/wall")
 
@@ -508,9 +634,6 @@ def updateListText(request):
     list_index = request.GET.get("list_num")
     id = request.GET.get("storyboard")
 
-    print(list_index)
-    print(id)
-
     storyboard_infos = storyboard.objects.get(id=id, owner_id=request.user.id)
     storyboard_text_infos = storyboard_text.objects.filter(storyboard_id=storyboard_infos.id).order_by('case_id', 'text_order')
 
@@ -530,9 +653,59 @@ def updateListText(request):
 
     if(int(list_index) == 1):
         list_text_and_id = list_text_and_id[0:len(list_save_text)]
-        return render(request, 'main/listText.html', locals())
+        return render(request, 'main/list_text.html', locals())
     if(int(list_index) == 2):
         list_text_and_id = list_text_and_id[len(list_save_text):]
-        return render(request, 'main/listText.html', locals())
+        return render(request, 'main/list_text.html', locals())
 
-    return render(request, 'main/listText.html', locals())
+    return render(request, 'main/list_text.html', locals())
+
+def updateListPicture(request):
+
+    list_save_picture_case = []
+    list_save_picture = []
+    id = request.GET.get("storyboard")
+
+    storyboard_pictures_infos = storyboard_picture.objects.filter(storyboard_id=id)
+    for storyboard_pictures_infos_unit in storyboard_pictures_infos:
+        list_save_picture.append(storyboard_pictures_infos_unit.picture)
+        list_save_picture_case.append(storyboard_pictures_infos_unit.case_id)
+
+    list_picture_save_and_case_id = zip(list_save_picture_case, list_save_picture)
+    list_picture_save_and_case_id = dict(list_picture_save_and_case_id)
+
+    return render(request, 'main/update_picture.html', locals())
+
+def createPicture(request):
+
+    storyboard_id = request.POST.get("storyboard_id")
+    case_id = request.POST.get("case_id")
+    text = request.POST.get("text")
+    current_storyboard = storyboard.objects.get(id=storyboard_id)
+
+    try:
+        current_storyboard_picture = storyboard_picture.objects.get(storyboard=current_storyboard, case_id=case_id, owner_id=request.user.id)
+        current_storyboard_picture.text = text
+        current_storyboard_picture.save()
+    except:
+        current_storyboard_picture = storyboard_picture(storyboard=current_storyboard, case_id=case_id, text=text, owner_id=request.user.id)
+        current_storyboard_picture.save()
+
+    return HttpResponse({"operation_result": "ok"})
+
+@csrf_exempt
+def updatePictureByFlask(request):
+
+    storyboard_id = request.POST.get("storyboard_id")
+    case_id = request.POST.get("case_id")
+    owner_id = request.POST.get("owner_id")
+    pictureB64 = request.POST.get("pictureB64")
+    current_storyboard = storyboard.objects.get(id=storyboard_id)
+
+    print("storyboard_id", storyboard_id, "case_id", case_id, "owner_id", owner_id, "pictureB64", pictureB64)
+
+    current_storyboard_picture = storyboard_picture.objects.get(storyboard=current_storyboard, case_id=case_id, owner_id=owner_id)
+    current_storyboard_picture.picture = BytesIO(base64.b64decode(pictureB64)).read()
+    current_storyboard_picture.save()
+
+    return HttpResponse({"operation_result": "ok"})

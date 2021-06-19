@@ -27,12 +27,8 @@ class storyboard_text(models.Model):
 class storyboard_picture(models.Model):
     storyboard = models.ForeignKey(storyboard, on_delete=models.CASCADE)
     case_id = models.IntegerField(default="0")
-    path = models.CharField(max_length=256, unique=False, default="NULL")
-    owner_id = models.IntegerField(default="0")
-
-class storyboard_depot(models.Model):
-    storyboard = models.ForeignKey(storyboard, on_delete=models.CASCADE)
     text = models.CharField(max_length=1024, unique=False, default="NULL")
+    picture = models.BinaryField(null=True, editable=True)
     owner_id = models.IntegerField(default="0")
 
 class storyboard_publications(models.Model):

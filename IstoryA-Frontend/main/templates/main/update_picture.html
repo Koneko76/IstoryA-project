@@ -1,0 +1,9 @@
+{% load custom_filters %}
+
+{% block content %}
+      {% for key, value in list_picture_save_and_case_id.items %}
+          {% if case == key %}
+                <img style="position: relative; width: 94%; left: 15px;" src="data:image/png;base64,{{value|binary_to_image}}" alt="">
+          {% endif %}
+      {% endfor %}
+{% endblock %}
