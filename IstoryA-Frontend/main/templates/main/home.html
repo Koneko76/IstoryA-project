@@ -1,19 +1,14 @@
 {% load static %}
-
 {% block content %}
 
 <!DOCTYPE html>
 <html>
-
 <head>
-
     <meta charset="UTF-8">
-    <title> IstoryA - Home </title>
+    <title>IstoryA - Home</title>
     <link href="{% static 'main//vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'main/css/home.css' %}">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
 </head>
 
 <body>
@@ -22,94 +17,92 @@
         <span class="loader"><span class="loader-inner"></span></span>
     </div>
 
-   <div class="shadow-title parallax-top-shadow">IstoryA</div>
+    <div class="shadow-title parallax-top-shadow">IstoryA</div>
 
-    <div class="content_login content_login_first_generation">
-        <a href="#" style="margin-bottom: -100px" data-toggle="modal" data-target="#create_text"><span>Create your storyboard</span></a>
+    <div class="content-login content-login-first-generation">
+        <a href="#" style="margin-bottom: -100px" data-toggle="modal" data-target="#create-story"><span>Create your storyboard</span></a>
     </div>
 
-   <h1 class="title_list_storyboard_home">List of your storyboards</h1>
-   <div class="line line_title_list_storyboard_home"></div>
+    <h1 class="title-list-storyboard-home">List of your storyboards</h1>
+    <div class="line line-title-list-storyboard-home"></div>
 
-   <div class="content_login ">
-       <a href="/wall" style=" position: fixed; top: 10vh; right: 4vw;"><span>IstoryA's Wall</span></a>
-       <a href="" data-toggle="modal" data-target="#logout" style=" position: fixed; top: 15vh; right: 4vw;"><span>Logout</span></a>
-  </div>
+    <div class="content-login ">
+        <a href="/wall" class="button-right-one"><span>IstoryA's Wall</span></a>
+        <a href="" class="button-right-two" data-toggle="modal" data-target="#logout"><span>Logout</span></a>
+    </div>
 
-    <div class="storyboard_list_home">
+    <div class="storyboard-list-home">
         {% for storyboard in count_storyboard %}
-           <ul class="cards">
-               <li>
-                <div href="" class="card">
-                  <a href="/storyboard/{{ storyboard.id }}"><img src="https://i.imgur.com/oYiTqum.jpg" class="card__image" alt="" /></a>
-                  <div class="card__overlay">
-                    <div class="card__header">
-                      <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>
-                      <img class="card__thumb" src="{% static 'main//pictures/site/round.png' %}" alt="" />
-                      <div class="card__header-text">
-                        <h3 class="card__title">{{ user.get_username }}</h3>
-                        <span class="card__tagline">{{ storyboard.name }}</span>
-                        <span class="card__status">{{ storyboard.creation_date|timesince }} ago</span>
-                          {% if storyboard.owner_fav == 0 %}
-                              <a href="/fav_storyboard_home/{{ storyboard.id }}"><div id="fav_button" class="fav-btn {{ storyboard.id }}" style="background: url({% static 'main//pictures/site/fav.png' %});"></div></a>
-                          {% elif storyboard.owner_fav == 1 %}
-                            <a href="/fav_storyboard_home/{{ storyboard.id }}"><div id="fav_button" class="fav-btn {{ storyboard.id }} active" style="background: url({% static 'main//pictures/site/fav1.png' %});"></div></a>
-                          {% endif %}
-                      </div>
+            <ul class="cards">
+                <li>
+                    <div href="" class="card">
+                        <a href="/storyboard/{{ storyboard.id }}"><img src="https://i.imgur.com/oYiTqum.jpg" class="card-image" alt="" /></a>
+                        <div class="card-overlay">
+                            <div class="card-header">
+                                <svg class="card-arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>
+                                <img class="card-thumb" src="{% static 'main//pictures/site/round.png' %}" alt="round-picture"/>
+                                <div class="card-header-text">
+                                    <h3 class="card-title">{{ user.get_username }}</h3>
+                                    <span class="card-tagline">{{ storyboard.name }}</span>
+                                    <span class="card-status">{{ storyboard.creation_date|timesince }} ago</span>
+                                    {% if storyboard.owner_fav == 0 %}
+                                        <a href="/fav_storyboard_home/{{ storyboard.id }}"><div id="fav_button" class="fav-btn {{ storyboard.id }}" style="background: url({% static 'main//pictures/site/fav.png' %});"></div></a>
+                                    {% elif storyboard.owner_fav == 1 %}
+                                        <a href="/fav_storyboard_home/{{ storyboard.id }}"><div id="fav_button" class="fav-btn {{ storyboard.id }} active" style="background: url({% static 'main//pictures/site/fav1.png' %});"></div></a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        <p class="card-description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores, blanditiis? Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores, blanditiis? Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores, blanditiis?</p>
+                        </div>
                     </div>
-                    <p class="card__description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores, blanditiis? Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores, blanditiis? Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores, blanditiis?</p>
-                  </div>
-                </div>
-              </li>
-           </ul>
+                </li>
+            </ul>
         {% endfor %}
     </div>
 
-    <div class="scroll-to-top hover-target"></div>
-
-    <!-- Modal 1 -->
-    <div class="modal fade" id="create_text" tabindex="-1" role="dialog" aria-labelledby="create_textLabel" aria-hidden="true">
+    <!-- Modal 1 - Create Story -->
+    <div class="modal fade" id="create-story" tabindex="-1" role="dialog" aria-labelledby="createStoryLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="create_textLabel" style="color: black">Generate Storyboard</h5>
+                    <h5 class="modal-title" id="createStoryLabel" style="color: black">Generate Storyboard</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                        <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
                 <form method="post">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <label>Select your genre</label>
-                        {{ form.typeStory }}
+                    <div class="modal-body">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label>Select your genre</label>
+                            {{ formCreateStoryHome.type }}
+                        </div>
+                        <div class="form-group">
+                            <label>Enter the first sentence of your storyboard</label>
+                            {{ formCreateStoryHome.start }}
+                        </div>
+                        <div class="form-group">
+                            <label>Length of your storyboard (max = 512 words)</label>
+                            {{ formCreateStoryHome.length }}
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label>Enter the first sentence of your storyboard</label>
-                        {{ form.startStory }}
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                        <button type="submit" name="submit" type="button" class="btn btn-primary">Generate</button>
                     </div>
-                    <div class="form-group">
-                        <label>Length of your storyboard (max = 512 words)</label>
-                        {{ form.lengthStory }}
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                    <button type="submit" name="submit" type="button" class="btn btn-primary">Generate</button>
-                </div>
                 </form>
             </div>
         </div>
     </div>
 
-    <!-- Modal 2 -->
+    <!-- Modal 2 - Logout -->
     <div class="modal fade" id="logout" tabindex="-1" role="dialog" aria-labelledby="logoutLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="logoutLabel" style="color: black">Logout</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                        <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body" style="color: black">
@@ -126,8 +119,8 @@
 </body>
 </html>
 
-    <script type="text/javascript" src="{% static 'main/js/jquery.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'main//vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-    <script src="{% static 'main/js/animation.js' %}"></script>
+<script type="text/javascript" src="{% static 'main/js/jquery.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'main//vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'main/js/animation.js' %}"></script>
 
 {% endblock %}

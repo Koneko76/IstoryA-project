@@ -1,0 +1,75 @@
+{% load static %}
+{% load custom_filters %}
+{% block content %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>IstoryA - {{ current_storyboard.name }}</title>
+    <link href="{% static 'main//vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'main/css/home.css' %}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+</head>
+<body>
+
+    <div class="loader-wrapper">
+        <span class="loader"><span class="loader-inner"></span></span>
+    </div>
+
+    <div class="shadow-title parallax-top-shadow">IstoryA</div>
+
+    <h1 class="title-list-storyboard-home">{{ current_storyboard.name }}</h1>
+    <div class="line line-title-list-storyboard-home"></div>
+
+    <div class="content-login ">
+        <a href="/home" class="button-right-one"><span>Home</span></a>
+        <a href="/wall" class="button-right-two"><span>IstoryA's Wall</span></a>
+    </div>
+
+    <div id="carouselExampleIndicators" class="carousel slide slide-storyboard" data-ride="carousel">
+        <ol class="carousel-indicators">
+            {% for case in current_storyboard_length %}
+                {% if forloop.first %}<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>{% endif %}
+                {% if not forloop.first %}<li data-target="#carouselExampleIndicators" data-slide-to="{{ case }}"></li>{% endif %}
+            {% endfor %}
+        </ol>
+        <div class="carousel-inner">
+            {% for case in current_storyboard_length %}
+                {% if forloop.first %}<div class="carousel-item active">{% endif %}
+                {% if not forloop.first %}<div class="carousel-item">{% endif %}
+                    {% for key, value in list_picture_save_and_case_id.items %}
+                        {% if case == key and value %}
+                            <img class="picture-storyboard" src = "data:image/png;base64,{{value|binary_to_image}}" alt="picture-storyboard-{{case}}">
+                        {% endif %}
+                    {% endfor %}
+                    <div class="carousel-caption">
+                        {% for key, value in dict_text.items %}
+                            {% if case == key %}
+                                {% for value_unit in value %}
+                                    <p class="text-storyboard">{{ value_unit }}</p>
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+
+</body>
+</html>
+
+<script type="text/javascript" src="{% static 'main/js/jquery.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'main//vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'main/js/animation.js' %}"></script>
+
+{% endblock %}

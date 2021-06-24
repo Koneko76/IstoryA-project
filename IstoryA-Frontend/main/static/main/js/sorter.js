@@ -1,5 +1,4 @@
 var Sortable = function(element){
-
     var rect;
     var self = this;
     this.element = element;
@@ -91,7 +90,6 @@ Sortable.prototype.swap = function(start, end){
                 this.moveItem(item, position +1);
             }else if(position <= end && position > start && end > start){
                 this.moveItem(item, position -1);
-
             }
         }
     }
@@ -113,11 +111,5 @@ Sortable.prototype.moveItem = function(item, position){
     const request2 = new Request('/update_case_order_storyboard/', {method: 'POST', body: formData2, headers: {'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value}});
     fetch(request2)
         .then(response => response.json())
-        .then(result => {
-            console.log(result);
-        })
-    console.log("1 pos", item.dataset.position)
-    console.log("1 id", item.dataset.id)
-    console.log("1 storyboard", item.dataset.storyboard)
-    console.log("1 text", item.dataset.text)
+        .then(result => {})
 };

@@ -4,139 +4,132 @@
 
 <!DOCTYPE html>
 <html>
-
 <head>
-
     <meta charset="UTF-8">
-    <title> IstoryA - Home </title>
+    <title>IstoryA - {{ current_storyboard.name }}</title>
     <link href="{% static 'main//vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'main/css/home.css' %}">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
 </head>
-
 <body>
 
     <div class="loader-wrapper">
         <span class="loader"><span class="loader-inner"></span></span>
     </div>
 
-   <div class="shadow-title parallax-top-shadow">IstoryA</div>
+    <div class="shadow-title parallax-top-shadow">IstoryA</div>
 
-   <h1 class="title_list_storyboard_home">{{ current_storyboard.name }}</h1>
-   <div class="line line_title_list_storyboard_home"></div>
+    <h1 class="title-list-storyboard-home">{{ current_storyboard.name }}</h1>
+    <div class="line line-title-list-storyboard-home"></div>
 
-      <div class="content_login ">
-           <a href="{{ update_storyboard_path }}" style=" position: fixed; top: 10vh; right: 4vw;"><span>Edit Storyboard</span></a>
-           <a href="{{ update_name_path }}" style=" position: fixed; top: 15vh; right: 4vw;" data-toggle="modal" data-target="#change_name"><span>Edit name</span></a>
-           <a href="{{ update_name_path }}" style=" position: fixed; top: 20vh; right: 4vw;" data-toggle="modal" data-target="#publish_story"><span>Publish</span></a>
-           <a href="" data-toggle="modal" data-target="#delete_storyboard" style="position: fixed; top: 25vh; right: 4vw;"><span>Delete</span></a>
-           <a href="/home" style=" position: fixed; top: 30vh; right: 4vw;"><span>Home</span></a>
-      </div>
+    <div class="content-login ">
+        <a href="{{ update_storyboard_path }}" class="button-right-one"><span>Edit Storyboard</span></a>
+        <a href="{{ update_name_path }}" class="button-right-two" data-toggle="modal" data-target="#change-name"><span>Edit name</span></a>
+        <a href="{{ update_name_path }}" class="button-right-three" data-toggle="modal" data-target="#publish-storyboard"><span>Publish</span></a>
+        <a href="" class="button-right-four" data-toggle="modal" data-target="#delete-storyboard"><span>Delete</span></a>
+        <a href="/home" class="button-right-five"><span>Home</span></a>
+    </div>
 
-   <div id="carouselExampleIndicators" class="carousel slide slide_storyboard" data-ride="carousel">
-      <ol class="carousel-indicators">
-        {% for case in current_storyboard_length %}
-            {% if forloop.first %}<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>{% endif %}
-            {% if not forloop.first %}<li data-target="#carouselExampleIndicators" data-slide-to="{{ case }}"></li>{% endif %}
-        {% endfor %}
-      </ol>
-      <div class="carousel-inner">
-         {% for case in current_storyboard_length %}
-            {% if forloop.first %}<div class="carousel-item active">{% endif %}
-            {% if not forloop.first %}<div class="carousel-item">{% endif %}
-            {% for key, value in list_picture_save_and_case_id.items %}
-                {% if case == key and value %}
-                  <img class="picture_storyboard" src = "data:image/png;base64,{{value|binary_to_image}}" alt="">
-                {% endif %}
-              {% endfor %}
-              <div class="carousel-caption">
-              {% for key, value in dict_text.items %}
-                  {% if case == key %}
-                        {% for value_unit in value %}
-                            <p class="text_storyboard">{{ value_unit }}</p>
+    <div id="carouselExampleIndicators" class="carousel slide slide-storyboard" data-ride="carousel">
+        <ol class="carousel-indicators">
+            {% for case in current_storyboard_length %}
+                {% if forloop.first %}<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>{% endif %}
+                {% if not forloop.first %}<li data-target="#carouselExampleIndicators" data-slide-to="{{ case }}"></li>{% endif %}
+            {% endfor %}
+        </ol>
+        <div class="carousel-inner">
+            {% for case in current_storyboard_length %}
+                {% if forloop.first %}<div class="carousel-item active">{% endif %}
+                {% if not forloop.first %}<div class="carousel-item">{% endif %}
+                    {% for key, value in list_picture_save_and_case_id.items %}
+                        {% if case == key and value %}
+                            <img class="picture-storyboard" src = "data:image/png;base64,{{value|binary_to_image}}" alt="picture-storyboard-{{case}}">
+                        {% endif %}
+                    {% endfor %}
+                    <div class="carousel-caption">
+                        {% for key, value in dict_text.items %}
+                            {% if case == key %}
+                                {% for value_unit in value %}
+                                    <p class="text-storyboard">{{ value_unit }}</p>
+                                {% endfor %}
+                            {% endif %}
                         {% endfor %}
-                  {% endif %}
-              {% endfor %}
-              </div>
-            </div>
-         {% endfor %}
-      </div>
-      <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-      </a>
-      <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-      </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
     </div>
 
-    <div class="scroll-to-top hover-target"></div>
-
-   <!-- Modal -->
-    <div class="modal fade" id="change_name" tabindex="-1" role="dialog" aria-labelledby="change_nameLabel" aria-hidden="true">
+   <!-- Modal 1 - Change Name of storyboard -->
+    <div class="modal fade" id="change-name" tabindex="-1" role="dialog" aria-labelledby="changeNameLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="change_nameLabel" style="color: black">Change the name of your storyboard</h5>
+                    <h5 class="modal-title" id="changeNameLabel" style="color: black">Change the name of your storyboard</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                        <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
                 <form method="post">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <label>Enter a new name for your storyboard</label>
-                        {{ formChangeName.newNameStoryboard }}
+                    <div class="modal-body">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label>Enter a new name for your storyboard</label>
+                            {{ formChangeName.new_name }}
+                        </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                    <button type="submit" name="submit" value="Submit" type="button" class="btn btn-primary">Change</button>
-                </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                        <button type="submit" name="submit" class="btn btn-primary">Change</button>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 
-      <!-- Modal 2 -->
-    <div class="modal fade" id="publish_story" tabindex="-1" role="dialog" aria-labelledby="publish_storyLabel" aria-hidden="true">
+      <!-- Modal 2 - Publish the storyboard -->
+    <div class="modal fade" id="publish-storyboard" tabindex="-1" role="dialog" aria-labelledby="publishStoryboardLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="publish_storyLabel" style="color: black">Publish your Storyboard</h5>
+                    <h5 class="modal-title" id="publishStoryboardLabel" style="color: black">Publish your Storyboard</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                        <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
                 <form method="post">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <label>Enter a message (max = 256 characters)</label>
-                        {{ formPublishStoryboard.messagetoryboard }}
+                    <div class="modal-body">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label>Enter a message (max = 256 characters)</label>
+                            {{ formPublishStoryboard.publication_message }}
+                        </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                    <button type="submit" name="submit" type="button" class="btn btn-primary">Publish</button>
-                </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                        <button type="submit" name="submit" class="btn btn-primary">Publish</button>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 
-    <!-- Modal 3 -->
-    <div class="modal fade" id="delete_storyboard" tabindex="-1" role="dialog" aria-labelledby="delete_storyboardLabel" aria-hidden="true">
+    <!-- Modal 3 - Delete the storyboard -->
+    <div class="modal fade" id="delete-storyboard" tabindex="-1" role="dialog" aria-labelledby="deleteStoryboardLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="delete_storyboardLabel" style="color: black">Delete your Storyboard</h5>
+                    <h5 class="modal-title" id="deleteStoryboardLabel" style="color: black">Delete your Storyboard</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                        <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body" style="color: black">
@@ -150,51 +143,11 @@
         </div>
     </div>
 
-
-    <style>
-       .slide_storyboard {
-            margin-top: 50px;
-            width: 70vw;
-            height: 70vh;
-            position: relative;
-            margin-left: auto;
-            margin-right: auto;
-       }
-
-       .carousel-caption {
-           position: relative;
-           right: 0 !important;
-           left: 0 !important;
-           bottom: -30px;
-           margin-right: auto;
-           margin-left: auto;
-           z-index: 10;
-           padding-top: 20px;
-           padding-bottom: 20px;
-           color: #fff;
-           text-align: center;
-           height: 300px;
-           padding-left: 10vw;
-           padding-right: 10vw;
-       }
-
-       .picture_storyboard {
-           position: relative;
-           transform: translate(-50%, 0%);
-           left: 50%;
-           width: 550px;
-       }
-
-       .text_storyboard{
-           font-size: 2vh;
-       }
-    </style>
-
 </body>
 </html>
 
-    <script type="text/javascript" src="{% static 'main/js/jquery.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'main//vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-    <script src="{% static 'main/js/animation.js' %}"></script>
+<script type="text/javascript" src="{% static 'main/js/jquery.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'main//vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'main/js/animation.js' %}"></script>
 
 {% endblock %}

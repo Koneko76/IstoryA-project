@@ -1,8 +1,9 @@
 $(document).ready(function() {
-    $("#submitGeneratePicture1").click(function () {
-        var x = $("#generatePicture1").serializeArray();
+    var ip = 'http://192.168.1.54:5000/picture_generation'
+    $("#submit-generate-picture-1").click(function () {
+        var x = $("#generate-picture-1").serializeArray();
         if(x[0].value == "choose"){
-            $('#error_choose').modal('show')
+            $('#error-choose').modal('show')
         }else{
             let formData = new FormData();
             formData.append('text_id', x[0].value);
@@ -31,31 +32,25 @@ $(document).ready(function() {
                     });
                     fetch(request2)
                         .then(response => response.json())
-                        .then(result => {
-                        });
+                        .then(result => {});
                     $.ajax({
                         type: 'POST',
-                        url: 'http://192.168.1.55:5000/picture_generation',
+                        url: ip,
                         data: {
                             "text": result,
                             "storyboard_id": x[2].value,
                             "case_id": x[1].value,
                             "owner_id": x[3].value
                         },
-                        dataType: 'jsonp',
-                        success: myCallback
+                        dataType: 'jsonp'
                     });
-
-                    function myCallback(result) {
-                        alert(result)
-                    }
                 });
         }
     });
-    $("#submitGeneratePicture2").click(function () {
-        var x = $("#generatePicture2").serializeArray();
+    $("#submit-generate-picture-2").click(function () {
+        var x = $("#generate-picture-2").serializeArray();
         if(x[0].value == "choose"){
-            $('#error_choose').modal('show')
+            $('#error-choose').modal('show')
         }else{
             let formData = new FormData();
             formData.append('text_id', x[0].value);
@@ -88,27 +83,22 @@ $(document).ready(function() {
                         });
                     $.ajax({
                         type: 'POST',
-                        url: 'http://192.168.1.55:5000/picture_generation',
+                        url: ip,
                         data: {
                             "text": result,
                             "storyboard_id": x[2].value,
                             "case_id": x[1].value,
                             "owner_id": x[3].value
                         },
-                        dataType: 'jsonp',
-                        success: myCallback
+                        dataType: 'jsonp'
                     });
-
-                    function myCallback(result) {
-                        alert(result)
-                    }
                 });
         }
     });
-   $("#submitGeneratePicture3").click(function () {
-        var x = $("#generatePicture3").serializeArray();
+   $("#submit-generate-picture-3").click(function () {
+        var x = $("#generate-picture-3").serializeArray();
         if(x[0].value == "choose"){
-            $('#error_choose').modal('show')
+            $('#error-choose').modal('show')
         }else{
             let formData = new FormData();
             formData.append('text_id', x[0].value);
@@ -141,27 +131,22 @@ $(document).ready(function() {
                         });
                     $.ajax({
                         type: 'POST',
-                        url: 'http://192.168.1.55:5000/picture_generation',
+                        url: ip,
                         data: {
                             "text": result,
                             "storyboard_id": x[2].value,
                             "case_id": x[1].value,
                             "owner_id": x[3].value
                         },
-                        dataType: 'jsonp',
-                        success: myCallback
+                        dataType: 'jsonp'
                     });
-
-                    function myCallback(result) {
-                        alert(result)
-                    }
                 });
         }
     });
-    $("#submitGeneratePicture4").click(function () {
-        var x = $("#generatePicture4").serializeArray();
+    $("#submit-generate-picture-4").click(function () {
+        var x = $("#generate-picture-4").serializeArray();
         if(x[0].value == "choose"){
-            $('#error_choose').modal('show')
+            $('#error-choose').modal('show')
         }else{
             let formData = new FormData();
             formData.append('text_id', x[0].value);
@@ -194,27 +179,22 @@ $(document).ready(function() {
                         });
                     $.ajax({
                         type: 'POST',
-                        url: 'http://192.168.1.55:5000/picture_generation',
+                        url: ip,
                         data: {
                             "text": result,
                             "storyboard_id": x[2].value,
                             "case_id": x[1].value,
                             "owner_id": x[3].value
                         },
-                        dataType: 'jsonp',
-                        success: myCallback
+                        dataType: 'jsonp'
                     });
-
-                    function myCallback(result) {
-                        alert(result)
-                    }
                 });
         }
     });
-   $("#submitGeneratePicture5").click(function () {
-        var x = $("#generatePicture5").serializeArray();
+   $("#submit-generate-picture-5").click(function () {
+        var x = $("#generate-picture-5").serializeArray();
         if(x[0].value == "choose"){
-            $('#error_choose').modal('show')
+            $('#error-choose').modal('show')
         }else{
             let formData = new FormData();
             formData.append('text_id', x[0].value);
@@ -247,27 +227,22 @@ $(document).ready(function() {
                         });
                     $.ajax({
                         type: 'POST',
-                        url: 'http://192.168.1.55:5000/picture_generation',
+                        url: ip,
                         data: {
                             "text": result,
                             "storyboard_id": x[2].value,
                             "case_id": x[1].value,
                             "owner_id": x[3].value
                         },
-                        dataType: 'jsonp',
-                        success: myCallback
+                        dataType: 'jsonp'
                     });
-
-                    function myCallback(result) {
-                        alert(result)
-                    }
                 });
         }
     });
-    $("#submitGeneratePicture6").click(function () {
-        var x = $("#generatePicture6").serializeArray();
+    $("#submit-generate-picture-6").click(function () {
+        var x = $("#generate-picture-6").serializeArray();
         if(x[0].value == "choose"){
-            $('#error_choose').modal('show')
+            $('#error-choose').modal('show')
         }else{
             let formData = new FormData();
             formData.append('text_id', x[0].value);
@@ -300,27 +275,22 @@ $(document).ready(function() {
                         });
                     $.ajax({
                         type: 'POST',
-                        url: 'http://192.168.1.55:5000/picture_generation',
+                        url: ip,
                         data: {
                             "text": result,
                             "storyboard_id": x[2].value,
                             "case_id": x[1].value,
                             "owner_id": x[3].value
                         },
-                        dataType: 'jsonp',
-                        success: myCallback
+                        dataType: 'jsonp'
                     });
-
-                    function myCallback(result) {
-                        alert(result)
-                    }
                 });
         }
     });
-    $("#submitGeneratePicture7").click(function () {
-        var x = $("#generatePicture7").serializeArray();
+    $("#submit-generate-picture-7").click(function () {
+        var x = $("#generate-picture-7").serializeArray();
         if(x[0].value == "choose"){
-            $('#error_choose').modal('show')
+            $('#error-choose').modal('show')
         }else{
             let formData = new FormData();
             formData.append('text_id', x[0].value);
@@ -353,27 +323,22 @@ $(document).ready(function() {
                         });
                     $.ajax({
                         type: 'POST',
-                        url: 'http://192.168.1.55:5000/picture_generation',
+                        url: ip,
                         data: {
                             "text": result,
                             "storyboard_id": x[2].value,
                             "case_id": x[1].value,
                             "owner_id": x[3].value
                         },
-                        dataType: 'jsonp',
-                        success: myCallback
+                        dataType: 'jsonp'
                     });
-
-                    function myCallback(result) {
-                        alert(result)
-                    }
                 });
         }
     });
-    $("#submitGeneratePicture8").click(function () {
-        var x = $("#generatePicture8").serializeArray();
+    $("#submit-generate-picture-8").click(function () {
+        var x = $("#generate-picture-8").serializeArray();
         if(x[0].value == "choose"){
-            $('#error_choose').modal('show')
+            $('#error-choose').modal('show')
         }else{
             let formData = new FormData();
             formData.append('text_id', x[0].value);
@@ -406,27 +371,22 @@ $(document).ready(function() {
                         });
                     $.ajax({
                         type: 'POST',
-                        url: 'http://192.168.1.55:5000/picture_generation',
+                        url: ip,
                         data: {
                             "text": result,
                             "storyboard_id": x[2].value,
                             "case_id": x[1].value,
                             "owner_id": x[3].value
                         },
-                        dataType: 'jsonp',
-                        success: myCallback
+                        dataType: 'jsonp'
                     });
-
-                    function myCallback(result) {
-                        alert(result)
-                    }
                 });
         }
     });
-    $("#submitGeneratePicture9").click(function () {
-        var x = $("#generatePicture9").serializeArray();
+    $("#submit-generate-picture-9").click(function () {
+        var x = $("#generate-picture-9").serializeArray();
         if(x[0].value == "choose"){
-            $('#error_choose').modal('show')
+            $('#error-choose').modal('show')
         }else{
             let formData = new FormData();
             formData.append('text_id', x[0].value);
@@ -459,27 +419,22 @@ $(document).ready(function() {
                         });
                     $.ajax({
                         type: 'POST',
-                        url: 'http://192.168.1.55:5000/picture_generation',
+                        url: ip,
                         data: {
                             "text": result,
                             "storyboard_id": x[2].value,
                             "case_id": x[1].value,
                             "owner_id": x[3].value
                         },
-                        dataType: 'jsonp',
-                        success: myCallback
+                        dataType: 'jsonp'
                     });
-
-                    function myCallback(result) {
-                        alert(result)
-                    }
                 });
         }
     });
-    $("#submitGeneratePicture10").click(function () {
-        var x = $("#generatePicture10").serializeArray();
+    $("#submit-generate-picture-10").click(function () {
+        var x = $("#generate-picture-10").serializeArray();
         if(x[0].value == "choose"){
-            $('#error_choose').modal('show')
+            $('#error-choose').modal('show')
         }else{
             let formData = new FormData();
             formData.append('text_id', x[0].value);
@@ -512,27 +467,22 @@ $(document).ready(function() {
                         });
                     $.ajax({
                         type: 'POST',
-                        url: 'http://192.168.1.55:5000/picture_generation',
+                        url: ip,
                         data: {
                             "text": result,
                             "storyboard_id": x[2].value,
                             "case_id": x[1].value,
                             "owner_id": x[3].value
                         },
-                        dataType: 'jsonp',
-                        success: myCallback
+                        dataType: 'jsonp'
                     });
-
-                    function myCallback(result) {
-                        alert(result)
-                    }
                 });
         }
     });
-    $("#submitGeneratePicture11").click(function () {
-        var x = $("#generatePicture11").serializeArray();
+    $("#submit-generate-picture-11").click(function () {
+        var x = $("#generate-picture-11").serializeArray();
         if(x[0].value == "choose"){
-            $('#error_choose').modal('show')
+            $('#error-choose').modal('show')
         }else{
             let formData = new FormData();
             formData.append('text_id', x[0].value);
@@ -565,27 +515,22 @@ $(document).ready(function() {
                         });
                     $.ajax({
                         type: 'POST',
-                        url: 'http://192.168.1.55:5000/picture_generation',
+                        url: ip,
                         data: {
                             "text": result,
                             "storyboard_id": x[2].value,
                             "case_id": x[1].value,
                             "owner_id": x[3].value
                         },
-                        dataType: 'jsonp',
-                        success: myCallback
+                        dataType: 'jsonp'
                     });
-
-                    function myCallback(result) {
-                        alert(result)
-                    }
                 });
         }
     });
-    $("#submitGeneratePicture12").click(function () {
-        var x = $("#generatePicture12").serializeArray();
+    $("#submit-generate-picture-12").click(function () {
+        var x = $("#generate-picture-12").serializeArray();
         if(x[0].value == "choose"){
-            $('#error_choose').modal('show')
+            $('#error-choose').modal('show')
         }else{
             let formData = new FormData();
             formData.append('text_id', x[0].value);
@@ -618,20 +563,15 @@ $(document).ready(function() {
                         });
                     $.ajax({
                         type: 'POST',
-                        url: 'http://192.168.1.55:5000/picture_generation',
+                        url: ip,
                         data: {
                             "text": result,
                             "storyboard_id": x[2].value,
                             "case_id": x[1].value,
                             "owner_id": x[3].value
                         },
-                        dataType: 'jsonp',
-                        success: myCallback
+                        dataType: 'jsonp'
                     });
-
-                    function myCallback(result) {
-                        alert(result)
-                    }
                 });
         }
     });

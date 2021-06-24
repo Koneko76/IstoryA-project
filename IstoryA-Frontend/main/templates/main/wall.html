@@ -1,103 +1,60 @@
 {% load static %}
-
 {% block content %}
 
 <!DOCTYPE html>
 <html>
-
 <head>
-
     <meta charset="UTF-8">
-    <title> IstoryA - Home </title>
+    <title>IstoryA - Wall</title>
     <link href="{% static 'main//vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'main/css/home.css' %}">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
 </head>
-
 <body>
 
     <div class="loader-wrapper">
         <span class="loader"><span class="loader-inner"></span></span>
     </div>
 
-   <div class="shadow-title parallax-top-shadow">IstoryA</div>
+    <div class="shadow-title parallax-top-shadow">IstoryA</div>
 
-   <h1 class="title_list_storyboard_home">IstoryA's Wall</h1>
-   <div class="line line_title_list_storyboard_home"></div>
+    <h1 class="title-list-storyboard-home">IstoryA's Wall</h1>
+    <div class="line line-title-list-storyboard-home"></div>
 
-    <div class="content_login ">
-       <a href="/home" style=" position: fixed; top: 10vh; right: 4vw;"><span>Home</span></a>
-       <a href="" data-toggle="modal" data-target="#logout" style=" position: fixed; top: 15vh; right: 4vw;"><span>Logout</span></a>
+    <div class="content-login">
+        <a href="/home" class="button-right-one"><span>Home</span></a>
+        <a href="" data-toggle="modal" data-target="#logout" class="button-right-two"><span>Logout</span></a>
     </div>
 
-    <div class="storyboard_list_home">
-        {% for publish_storyboard, user, like, fav in test %}
-           <ul class="cards">
-               <li>
-                <div href="" class="card">
-                  <img src="https://i.imgur.com/oYiTqum.jpg" class="card__image" alt="" />
-                  <div class="card__overlay">
-                    <div class="card__header">
-                      <svg class="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>
-                      <img class="card__thumb" src="https://i.imgur.com/7D7I6dI.png" alt="" />
-                      <div class="card__header-text">
-                        <h3 class="card__title">{{ user }}</h3>
-                        <span class="card__tagline">{{ publish_storyboard.name }}</span>
-                        <span class="card__status">{{ publish_storyboard.date_publish|timesince }} ago</span>
-                        <a href="/like_storyboard_publication/{{ publish_storyboard.id }}"><div id="fav_button" class="fav-btn {{ publish_storyboard.id }}" style="background: url({% static 'main//pictures/site/fav.png' %});"></div></a>
-                        <a href="/fav_storyboard_publication/{{ publish_storyboard.id }}"><i class="fas fa-heart like-btn"></i></a>
-                        <p class="like-btn-text">{{ like }}</p>
-                        <p class="fav-btn-text">{{ fav }}</p>
-                      </div>
+    <div class="storyboard-list-home">
+        {% for publish_storyboard, user, like, fav in infos %}
+            <ul class="cards">
+                <li>
+                    <div href="" class="card">
+                        <a href="/storyboard_published/{{ publish_storyboard.id }}"><img src="https://i.imgur.com/oYiTqum.jpg" class="card-image" alt="" /></a>
+                        <div class="card-overlay">
+                            <div class="card-header">
+                                <svg class="card-arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>
+                                <img class="card-thumb" src="{% static 'main//pictures/site/round.png' %}" alt="" />
+                                <div class="card-header-text">
+                                    <h3 class="card-title">{{ user }}</h3>
+                                    <span class="card-tagline">{{ publish_storyboard.name }}</span>
+                                    <span class="card-status">{{ publish_storyboard.publish_date|timesince }} ago</span>
+                                    <a href="/like_storyboard_publication/{{ publish_storyboard.id }}"><div id="fav_button" class="fav-btn {{ publish_storyboard.id }}" style="background: url({% static 'main//pictures/site/fav.png' %});"></div></a>
+                                    <a href="/fav_storyboard_publication/{{ publish_storyboard.id }}"><i class="fas fa-heart like-btn"></i></a>
+                                    <p class="like-btn-text">{{ like }}</p>
+                                    <p class="fav-btn-text">{{ fav }}</p>
+                                </div>
+                            </div>
+                            <p class="card-description">{{ publish_storyboard.publish_message }}</p>
+                        </div>
                     </div>
-                    <p class="card__description">{{ publish_storyboard.message }}</p>
-                  </div>
-                </div>
-              </li>
-           </ul>
+                </li>
+            </ul>
         {% endfor %}
     </div>
 
-    <div class="scroll-to-top hover-target"></div>
-
-    <!-- Modal -->
-    <div class="modal fade" id="create_text" tabindex="-1" role="dialog" aria-labelledby="create_textLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="create_textLabel" style="color: black">Generate Storyboard</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                <form method="post">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <label>Select your genre</label>
-                        {{ form.typeStory }}
-                    </div>
-                    <div class="form-group">
-                        <label>Enter the first sentence of your storyboard</label>
-                        {{ form.startStory }}
-                    </div>
-                    <div class="form-group">
-                        <label>Length of your storyboard (max = 512 words)</label>
-                        {{ form.lengthStory }}
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                    <button type="submit" name="submit" type="button" class="btn btn-primary">Generate</button>
-                </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal 2 -->
+    <!-- Modal 1 - Logout -->
     <div class="modal fade" id="logout" tabindex="-1" role="dialog" aria-labelledby="logoutLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -118,33 +75,17 @@
         </div>
     </div>
 
-    <style>
-        .fav-btn-text {
-          position: absolute;
-          right: 40px;
-          top: 65px;
-          z-index: 101;
-        }
-
-        .like-btn-text {
-          position: absolute;
-          right: 83px;
-          top: 65px;
-          z-index: 101;
-        }
-    </style>
-
 </body>
 </html>
 
-    <script type="text/javascript" src="{% static 'main/js/jquery.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'main//vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-    <script>
-        function fav(id) {
-            window.location.href='/fav_storyboard_home/' + id;
-            document.location.reload();
-        }
-    </script>
-    <script src="{% static 'main/js/animation.js' %}"></script>
+<script type="text/javascript" src="{% static 'main/js/jquery.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'main//vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'main/js/animation.js' %}"></script>
+<script>
+    function fav(id) {
+        window.location.href='/fav_storyboard_home/' + id;
+        document.location.reload();
+    }
+</script>
 
 {% endblock %}
