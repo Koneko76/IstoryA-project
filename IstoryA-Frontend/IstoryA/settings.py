@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-*%m*+h_i&*=79pk&c1y)_je7rxv&&h*vguxo2*93-y(3$(kr($
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.1.14', '127.0.0.1']
+ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -52,7 +52,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'IstoryA.urls'
-INTERNAL_IPS = ['127.0.0.1']
 
 TEMPLATES = [
     {
