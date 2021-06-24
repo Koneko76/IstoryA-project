@@ -44,6 +44,7 @@ urlpatterns = [
     path('like_storyboard_publication/<int:id>', views.likeStoryboardPublication, name="like_storyboard_publication"),
     path('create_picture/', views.createPicture, name="create_picture"),
     path('update_picture_by_flask/', views.updatePictureByFlask, name="update_picture_by_flask"),
+    path('generate_pdf/<int:id>', views.generatePDF, name="generate_pdf"),
     path('sup/', views.sup, name="sup"),
 ]
 
