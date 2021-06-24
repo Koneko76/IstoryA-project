@@ -6,6 +6,7 @@ from django.core.files.storage import FileSystemStorage
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
+from wsgiref.util import FileWrapper
 import tensorflow as tf
 from main.models import storyboard, storyboard_text, storyboard_publications, storyboard_picture
 from django.utils import timezone
@@ -15,6 +16,15 @@ import base64
 from django.views.decorators.csrf import csrf_exempt
 from io import BytesIO
 from nltk.tokenize import sent_tokenize
+from fpdf import FPDF
+from PIL import ImageFont
+from PIL import Image
+from PIL import ImageDraw
+import textwrap
+import PyPDF2
+import os
+
+
 
 fs = FileSystemStorage()
 path = fs.path("main/static/main/checkpoint")
@@ -400,6 +410,7 @@ def storyboardPage(request, id):
 
     update_storyboard_path = "/create/" + str(current_storyboard.id)
     delete_storyboard_path = "/delete/" + str(current_storyboard.id)
+    generate_pdf_path = "/generate_pdf/" + str(current_storyboard.id)
     return render(request, 'main/storyboard.html', locals())
 
 @login_required
@@ -637,3 +648,149 @@ def updatePictureByFlask(request):
     current_storyboard_picture.save()
 
     return HttpResponse({"operation_result": "ok"})
+
+@login_required
+def generatePDF(request, id):
+    list_save_text = []
+    list_save_text_case = []
+    list_save_picture = []
+    list_picture_path = []
+    default_blank_path = "tmp_pdf/blank.jpg"
+    current_storyboard = storyboard.objects.get(id=id)
+
+    fs = FileSystemStorage()
+    path = fs.path("main/static/main/fonts/arial.ttf")
+
+    storyboard_text_infos = storyboard_text.objects.filter(storyboard_id=current_storyboard.id)
+    for storyboard_text_infos_unit in storyboard_text_infos:
+        list_save_text.append(storyboard_text_infos_unit.text)
+        list_save_text_case.append(storyboard_text_infos_unit.case_id)
+
+    dict_text = dict()
+    for case in range(1, 13):
+        dict_text[case] = []
+    for length in range(1, 13):
+        for case, text in zip(list_save_text_case, list_save_text):
+            if length == case:
+                dict_text[case].append(text)
+
+
+    storyboard_pictures_infos = storyboard_picture.objects.filter(storyboard_id=current_storyboard.id).order_by('case_id')
+    for storyboard_pictures_infos_unit in storyboard_pictures_infos:
+        list_save_picture.append(storyboard_pictures_infos_unit.picture)
+
+    class PDF(FPDF):
+        pass
+
+    pdf = PDF(orientation='P', unit='mm', format='A4')
+
+    for i in range(0, len(list_save_picture)):
+        res = base64.b64encode(list_save_picture[i])
+        im = Image.open(BytesIO(base64.b64decode(res)))
+        im_size = im.size
+
+        new_im = Image.new('RGB', (im_size[0], im_size[1] + 200), (255,255,255))
+        new_im.paste(im, (0, 200))
+
+        font = ImageFont.truetype(path, 22)
+        draw = ImageDraw.Draw(new_im)
+        current_text = " ".join(dict_text[i+1])
+        lines = textwrap.wrap(current_text, width=50)
+        y_text = 4
+
+        for line in lines:
+            width, height = font.getsize(line)
+            draw.text((0, y_text), line, (0, 0, 0), font=font, align='center')
+            y_text += height
+
+        new_im.save("tmp_pdf/" + str(i+1) + ".jpg")
+
+    image_number = len(list_save_picture)
+    page_image_number = 6
+    nb_page = (image_number // page_image_number)
+    if image_number % page_image_number == 0:
+        nb_page = (image_number // page_image_number) - 1
+
+    for i in range(0, len(list_save_picture)):
+        list_picture_path.append("tmp_pdf/" + str(i+1) + ".jpg")
+
+    while nb_page >= 0:
+        pdf.add_page()
+
+        # left side
+        pdf.rect(10, 20, 80, 80)
+        pdf.rect(12, 22, 76, 76)
+
+        pdf.rect(10, 115, 80, 80)
+        pdf.rect(12, 117, 76, 76)
+
+        pdf.rect(10, 210, 80, 80)
+        pdf.rect(12, 212, 76, 76)
+
+        # right side
+        pdf.rect(120, 20, 80, 80)
+        pdf.rect(122, 22, 76, 76)
+
+        pdf.rect(120, 115, 80, 80)
+        pdf.rect(122, 117, 76, 76)
+
+        pdf.rect(120, 210, 80, 80)
+        pdf.rect(122, 212, 76, 76)
+
+        pdf.set_font('Arial', 'b', 15)
+        pdf.cell(70, 1)
+        pdf.cell(50, 5, current_storyboard.name + ' - Page ' + str(nb_page + 1), 0, 1, align='C')
+        pdf.set_font('Arial', 'b', 10)
+
+        for x in range(0, nb_page + 1):
+
+            if x * 6 + 0 <= (len(list_picture_path) - 1):
+                pdf.image(list_picture_path[x * 6 + 0], x=25, y=24, w=50, h=70, type='', link='')
+            else:
+                pdf.image(default_blank_path, x=25, y=24, w=50, h=70, type='', link='')
+
+            if x * 6 + 1 <= (len(list_picture_path) - 1):
+                pdf.image(list_picture_path[x * 6 + 1], x=135, y=24, w=50, h=70, type='', link='')
+            else:
+                pdf.image(default_blank_path, x=135, y=24, w=50, h=70, type='', link='')
+
+            if x * 6 + 2 <= (len(list_picture_path) - 1):
+                pdf.image(list_picture_path[x * 6 + 2], x=25, y=120, w=50, h=70, type='', link='')
+            else:
+                pdf.image(default_blank_path, x=25, y=120, w=50, h=70, type='', link='')
+
+            if x * 6 + 3 <= (len(list_picture_path) - 1):
+                pdf.image(list_picture_path[x * 6 + 3], 135, y=120, w=50, h=70, type='', link='')
+            else:
+                pdf.image(default_blank_path, 135, y=120, w=50, h=70, type='', link='')
+
+            if x * 6 + 4 <= (len(list_picture_path) - 1):
+                pdf.image(list_picture_path[x * 6 + 4], x=25, y=215, w=50, h=70, type='', link='')
+            else:
+                pdf.image(default_blank_path, x=25, y=215, w=50, h=70, type='', link='')
+
+            if x * 6 + 5 <= (len(list_picture_path) - 1):
+                pdf.image(list_picture_path[x * 6 + 5], x=135, y=215, w=50, h=70, type='', link='')
+            else:
+                pdf.image(default_blank_path, x=135, y=215, w=50, h=70, type='', link='')
+
+        nb_page = nb_page - 1
+
+    title_pdf = 'PDF-' + current_storyboard.name.replace(" ", "_") + '.pdf'
+    pdf.output(title_pdf, 'F')
+
+    path = 'tmp_pdf'
+    files = os.listdir(path)
+    for doc in files:
+        if "blank" not in doc:
+            os.remove(path + '/' + doc)
+
+    filename = open(title_pdf, 'rb')
+    content = filename.read()
+    response = HttpResponse(content, content_type='application/pdf')
+    response['Content-Length'] = os.path.getsize(title_pdf)
+    response['Content-Disposition'] = 'attachment; filename=%s' % title_pdf
+    filename.close()
+    os.remove(title_pdf)
+
+    return response

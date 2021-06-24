@@ -710,6 +710,12 @@ h6, .h6 {
     left: 2vw
 }
 
+.button-generate-pdf {
+    position: fixed !important;
+    bottom: 2vh;
+    left: 44.5%;
+}
+
 /* ============================================= */
 
 /* Fav & Like button
