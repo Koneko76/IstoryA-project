@@ -52,7 +52,9 @@
                                     {% endif %}
                                 </div>
                             </div>
-                        <p class="card-description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores, blanditiis? Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores, blanditiis? Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores, blanditiis?</p>
+                        {% if storyboard.abstract != "NULL" %}
+                            <p class="card-description">{{ storyboard.abstract }}</p>
+                        {% endif %}
                         </div>
                     </div>
                 </li>

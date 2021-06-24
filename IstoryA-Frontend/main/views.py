@@ -6,14 +6,13 @@ from django.core.files.storage import FileSystemStorage
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
-from wsgiref.util import FileWrapper
+from django.views.decorators.csrf import csrf_exempt
 import tensorflow as tf
 from main.models import storyboard, storyboard_text, storyboard_publications, storyboard_picture
 from django.utils import timezone
 from django.contrib.auth.models import User
 import json
 import base64
-from django.views.decorators.csrf import csrf_exempt
 from io import BytesIO
 from nltk.tokenize import sent_tokenize
 from fpdf import FPDF
@@ -21,10 +20,8 @@ from PIL import ImageFont
 from PIL import Image
 from PIL import ImageDraw
 import textwrap
-import PyPDF2
 import os
-
-
+from main.abstract_generation import generate_abstract
 
 fs = FileSystemStorage()
 path = fs.path("main/static/main/checkpoint")
@@ -411,6 +408,7 @@ def storyboardPage(request, id):
     update_storyboard_path = "/create/" + str(current_storyboard.id)
     delete_storyboard_path = "/delete/" + str(current_storyboard.id)
     generate_pdf_path = "/generate_pdf/" + str(current_storyboard.id)
+    generate_abstract_path = "/generate_abstract/" + str(current_storyboard.id)
     return render(request, 'main/storyboard.html', locals())
 
 @login_required
@@ -794,3 +792,20 @@ def generatePDF(request, id):
     os.remove(title_pdf)
 
     return response
+
+@login_required
+def generateAbstract(request, id):
+    list_save_text = []
+    current_storyboard = storyboard.objects.get(id=id)
+
+    storyboard_text_infos = storyboard_text.objects.filter(storyboard_id=current_storyboard.id).order_by('case_id', 'text_order')
+    for storyboard_text_infos_unit in storyboard_text_infos:
+        list_save_text.append(storyboard_text_infos_unit.text)
+
+    abstract = generate_abstract(list_save_text, 3)
+    abstract = " ".join(abstract)
+
+    current_storyboard.abstract = abstract
+    current_storyboard.save()
+
+    return redirect("/storyboard/" + str(id))

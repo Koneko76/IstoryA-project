@@ -14,6 +14,7 @@ class storyboard(models.Model):
     owner_fav = models.BooleanField(default=False)
     creation_date = models.DateTimeField(default=timezone.now)
     update_date = models.DateTimeField(auto_now=True)
+    abstract = models.CharField(max_length=1024, unique=False, default="NULL")
 
 class storyboard_text(models.Model):
     storyboard = models.ForeignKey(storyboard, on_delete=models.CASCADE)

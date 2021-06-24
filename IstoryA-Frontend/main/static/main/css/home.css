@@ -716,6 +716,12 @@ h6, .h6 {
     left: 44.5%;
 }
 
+.button-generate-abstract {
+    position: fixed !important;
+    bottom: 2vh;
+    left: 30.5%;
+}
+
 /* ============================================= */
 
 /* Fav & Like button
@@ -969,7 +975,7 @@ picture-storyboard {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
-    overflow: hidden;
+    overflow: auto;
 }
 
 /* ============================================= */

@@ -45,6 +45,7 @@ urlpatterns = [
     path('create_picture/', views.createPicture, name="create_picture"),
     path('update_picture_by_flask/', views.updatePictureByFlask, name="update_picture_by_flask"),
     path('generate_pdf/<int:id>', views.generatePDF, name="generate_pdf"),
+    path('generate_abstract/<int:id>', views.generateAbstract, name="generate_abstract"),
     path('sup/', views.sup, name="sup"),
 ]
 
