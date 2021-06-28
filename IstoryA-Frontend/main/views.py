@@ -109,7 +109,21 @@ def homePage(request):
     formCreateStoryHome = CreateStoryHome(request.POST or None)
     formRegenerateValidation = ValidationStoryHome(request.POST or None)
     formNext = SaveStoryboard(request.POST or None)
+    list_storyboard = []
+    list_profil_picture = []
     count_storyboard = storyboard.objects.filter(owner_id=request.user.id)
+
+    for storyboard_infos in count_storyboard:
+        list_storyboard.append(storyboard_infos.id)
+
+    for current_storyboard in list_storyboard:
+        try:
+            current_picture = storyboard_picture.objects.get(case_id=1, owner_id=request.user.id, storyboard=current_storyboard)
+            list_profil_picture.append(current_picture.picture)
+        except:
+            list_profil_picture.append("https://i.imgur.com/oYiTqum.jpg")
+
+    count_storyboard = zip(count_storyboard, list_profil_picture)
 
     if formCreateStoryHome.is_valid():
         length = formCreateStoryHome.cleaned_data["length"]
@@ -361,9 +375,10 @@ def storyboardPage(request, id):
     list_save_picture_case = []
     list_save_picture = []
     current_storyboard = storyboard.objects.get(id=id, owner_id=request.user.id)
+    length_picture = storyboard_picture.objects.filter(storyboard_id=id, owner_id=request.user.id).count()
 
     current_storyboard_length = current_storyboard.length
-    current_storyboard_length = range(1, current_storyboard_length+1)
+    current_storyboard_range = range(1, current_storyboard_length+1)
 
     storyboard_text_infos = storyboard_text.objects.filter(storyboard_id=current_storyboard.id)
     for storyboard_text_infos_unit in storyboard_text_infos:
