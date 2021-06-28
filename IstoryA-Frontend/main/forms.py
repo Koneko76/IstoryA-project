@@ -9,21 +9,21 @@ class CreateUserForm(UserCreationForm):
         fields = ['username', 'email', 'password1', 'password2']
 
 class CreateStory(forms.Form):
-    type = forms.ChoiceField(choices=[('Fantasy', 'Fantasy'), ('Horror', 'Horror'), ('Romance', 'Romance')], label="", widget=forms.Select(attrs={'class' : 'form-control select-multiple'}))
+    type = forms.ChoiceField(choices=[('Fantasy', 'Fantasy'), ('Western', 'Western'), ('Romance', 'Romance')], label="", widget=forms.Select(attrs={'class' : 'form-control select-multiple'}))
     start = forms.CharField(max_length=250, label="", required=True, widget=forms.TextInput(attrs={'class' : 'form-control text-input-user', 'placeholder' : 'Enter the first sentence of your future storyboard'}))
 
 class CreateStoryHome(forms.Form):
-    type = forms.ChoiceField(choices=[('Fantasy', 'Fantasy'), ('Horror', 'Horror'), ('Romance', 'Romance')], label="", widget=forms.Select(attrs={'class': 'form-control'}))
+    type = forms.ChoiceField(choices=[('Fantasy', 'Fantasy'), ('Western', 'Western'), ('Romance', 'Romance')], label="", widget=forms.Select(attrs={'class': 'form-control'}))
     start = forms.CharField(max_length=250, label="", required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
     length = forms.IntegerField(label="", widget=forms.TextInput(attrs={'class': 'form-control'}))
 
 class RegenerateStoryHome(forms.Form):
-    regenerate_type = forms.ChoiceField(choices=[('Fantasy', 'Fantasy'), ('Horror', 'Horror'), ('Romance', 'Romance')], label="", widget=forms.Select(attrs={'class': 'form-control'}))
+    regenerate_type = forms.ChoiceField(choices=[('Fantasy', 'Fantasy'), ('Western', 'Western'), ('Romance', 'Romance')], label="", widget=forms.Select(attrs={'class': 'form-control'}))
     regenerate_start = forms.CharField(max_length=250, label="", required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
     regenerate_length = forms.IntegerField(label="", widget=forms.TextInput(attrs={'class': 'form-control'}))
 
 class ValidationStoryHome(forms.Form):
-    type = forms.ChoiceField(choices=[('Fantasy', 'Fantasy'), ('Horror', 'Horror'), ('Romance', 'Romance')],label="", widget=forms.Select(attrs={'class': 'form-control'}))
+    type = forms.ChoiceField(choices=[('Fantasy', 'Fantasy'), ('Western', 'Western'), ('Romance', 'Romance')],label="", widget=forms.Select(attrs={'class': 'form-control'}))
     start = forms.CharField(max_length=250, label="", required=True, widget=forms.TextInput(attrs={'class': 'form-control'}))
     length = forms.IntegerField(label="", widget=forms.TextInput(attrs={'class': 'form-control'}))
 
