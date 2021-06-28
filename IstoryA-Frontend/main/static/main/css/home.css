@@ -50,7 +50,7 @@ a:hover {
 
 .heading {
     color: #eee;
-    font-size: 3rem;
+    font-size: 2.5vw;
     font-weight: 300;
     text-transform: uppercase;
     font-family: 'Etheriq_Normal';
@@ -71,7 +71,6 @@ a:hover {
     margin-top: -175px;
     justify-content: center;
     height: 100%;
-    padding: 0 25rem;
 }
 
 label {
@@ -86,10 +85,10 @@ label {
     grid-template-rows: repeat(3, 150px);
     grid-gap: 20px;
     max-width: 480px;
-    transform: rotate(45deg);
+    transform: translateX(-50%) rotate(45deg);
     position: absolute;
     top: 31vh;
-    left: 40.5vw;
+    left: 50%;
 }
 
 .grid-pulse .div-pulse {
@@ -715,6 +714,10 @@ h6, .h6 {
     text-align: center;
 }
 
+.disable {
+    color: dimgrey !important;
+}
+
 /* ============================================= */
 
 /* Fav & Like button
@@ -850,12 +853,6 @@ h6, .h6 {
     padding-right: 100px;
 }
 
-picture-storyboard {
-    position: relative;
-    width: 94%;
-    left: 15px;
-}
-
 /* ============================================= */
 
 /* CARD
@@ -877,14 +874,15 @@ picture-storyboard {
     border-radius: 30px;
     overflow: hidden;
     text-decoration: none;
-    width: 80%;
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: 25px;
+    margin-right: 25px;
+
 }
 
 .card-image {
-    width: 100%;
-    height: auto;
+    width: 472px;
+    height: 441px;
+
 }
 
 .card-overlay {
@@ -971,6 +969,10 @@ picture-storyboard {
     overflow: auto;
 }
 
+.card-description::-webkit-scrollbar {
+    display: none;
+}
+
 /* ============================================= */
 
 /* Register page
@@ -990,7 +992,6 @@ picture-storyboard {
     box-shadow: 30px 30px 30px -20px rgba(0, 0, 0, 0.6);
     border-radius: 2px;
     border-radius: 5px;
-    position: re;
     margin-right: auto;
     margin-left: auto;
     text-align: center;

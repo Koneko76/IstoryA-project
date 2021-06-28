@@ -32,18 +32,18 @@
 
     <div id="carouselExampleIndicators" class="carousel slide slide-storyboard" data-ride="carousel">
         <ol class="carousel-indicators">
-            {% for case in current_storyboard_length %}
+            {% for case in current_storyboard_range %}
                 {% if forloop.first %}<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>{% endif %}
                 {% if not forloop.first %}<li data-target="#carouselExampleIndicators" data-slide-to="{{ case }}"></li>{% endif %}
             {% endfor %}
         </ol>
         <div class="carousel-inner">
-            {% for case in current_storyboard_length %}
+            {% for case in current_storyboard_range %}
                 {% if forloop.first %}<div class="carousel-item active">{% endif %}
                 {% if not forloop.first %}<div class="carousel-item">{% endif %}
                     {% for key, value in list_picture_save_and_case_id.items %}
                         {% if case == key and value %}
-                            <img class="picture-storyboard" src = "data:image/png;base64,{{value|binary_to_image}}" alt="picture-storyboard-{{case}}">
+                            <img class="picture-storyboard" src="data:image/png;base64,{{value|binary_to_image}}" alt="picture-storyboard-{{case}}">
                         {% endif %}
                     {% endfor %}
                     <div class="carousel-caption">
@@ -70,7 +70,11 @@
 
     <div class="content-login">
         <div class="generate-feature">
-            <a href="{{ generate_pdf_path }}"><span>Generate PDF</span></a>
+            {% if length_picture == current_storyboard_length %}
+                <a href="{{ generate_pdf_path }}"><span>Generate PDF</span></a>
+            {% else %}
+                <a class="disable" href="" data-toggle="modal" data-target="#error-generation-pdf"><span>Generate PDF</span></a>
+            {% endif %}
             <a href="{{ generate_abstract_path }}" id="submit"><span>Generate abstract</span></a>
         </div>
     </div>
@@ -145,6 +149,26 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
                     <a href="{{ delete_storyboard_path }}" type="button" class="btn btn-danger">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 4 - Error PDF Generation -->
+    <div class="modal fade" id="error-generation-pdf" tabindex="-1" role="dialog" aria-labelledby="errorGenerationPDFLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="errorGenerationPDFLabel" style="color: black">Error</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="color: black">
+                     <p>You have to generate all the images of your storyboard to get the PDF version !</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Fermer</button>
                 </div>
             </div>
         </div>
