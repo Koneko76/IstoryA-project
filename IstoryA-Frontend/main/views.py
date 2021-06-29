@@ -119,9 +119,12 @@ def homePage(request):
     for current_storyboard in list_storyboard:
         try:
             current_picture = storyboard_picture.objects.get(case_id=1, owner_id=request.user.id, storyboard=current_storyboard)
-            list_profil_picture.append(current_picture.picture)
+            if current_picture.picture is None:
+                list_profil_picture.append("bear.jpg")
+            else:
+                list_profil_picture.append(current_picture.picture)
         except:
-            list_profil_picture.append("https://i.imgur.com/oYiTqum.jpg")
+            list_profil_picture.append("bear.jpg")
 
     count_storyboard = zip(count_storyboard, list_profil_picture)
 
@@ -546,9 +549,12 @@ def wallPage(request):
     for current_storyboard in list_storyboard:
         try:
             current_picture = storyboard_picture.objects.get(case_id=1, storyboard=current_storyboard)
-            list_profil_picture.append(current_picture.picture)
+            if current_picture.picture is None:
+                list_profil_picture.append("bear.jpg")
+            else:
+                list_profil_picture.append(current_picture.picture)
         except:
-            list_profil_picture.append("https://i.imgur.com/oYiTqum.jpg")
+            list_profil_picture.append("bear.jpg")
 
     infos = zip(list_storyboard_published, publish_user_infos, publish_like_infos, publish_fav_infos, list_profil_picture)
 
