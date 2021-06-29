@@ -312,7 +312,7 @@ h6, .h6 {
 ============================================= */
 
 #filter-bar {
-    width: 100%;
+    width: auto;
     margin:0;
     padding:0;
     height:36px;
@@ -320,11 +320,11 @@ h6, .h6 {
 }
 
 #wrapper-filter {
-    width: 50%;
     height: auto;
     margin: 0 auto 30px auto;
     box-sizing: border-box;
     color: white;
+    text-align: center;
 }
 
 #filter-bar li {
@@ -792,7 +792,7 @@ h6, .h6 {
 
 .storyboard-text {
     height: 25%;
-    padding: 15px;
+    padding: 15px 15px 40px 15px;
 }
 
 .storyboard-case {
@@ -815,13 +815,13 @@ h6, .h6 {
     position: relative;
     transform: translate(-50%, 0%);
     left: 50%;
+    height: 100%;
     width: 100%;
 }
 
 .storyboard-picture {
     height: 75%;
     border-bottom: solid white 2px;
-    padding: 15px;
 }
 
 .regen {
@@ -1146,6 +1146,26 @@ h6, .h6 {
         position: fixed !important;
         top: 34vh;
         left: -1vw
+    }
+
+    .badge-secondary {
+        color: #fff;
+        background-color: #6c757d;
+        font-size: 2vh;
+        margin-right: 15px;
+        margin-bottom: 15px;
+    }
+
+    .small-padding{
+        padding: 13px 20px !important;
+    }
+
+    .regen {
+        font-size: 3vh;
+        right: 4vw;
+        margin-top: 1vh;
+        z-index: 100;
+        cursor: pointer;
     }
 
 }
