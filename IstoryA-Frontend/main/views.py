@@ -825,6 +825,7 @@ def generatePDF(request, id):
 @login_required
 def generateAbstract(request, id):
     list_save_text = []
+    abstract_final = []
     current_storyboard = storyboard.objects.get(id=id)
 
     storyboard_text_infos = storyboard_text.objects.filter(storyboard_id=current_storyboard.id).order_by('case_id', 'text_order')
@@ -832,9 +833,15 @@ def generateAbstract(request, id):
         list_save_text.append(storyboard_text_infos_unit.text)
 
     abstract = generate_abstract(list_save_text, 3)
-    abstract = " ".join(abstract)
 
-    current_storyboard.abstract = abstract
+    for current_save_text in list_save_text:
+        for abstract_unit in abstract:
+            if current_save_text == abstract_unit:
+                abstract_final.append(abstract_unit)
+
+    abstract_final = " ".join(abstract_final)
+
+    current_storyboard.abstract = abstract_final
     current_storyboard.save()
 
     return redirect("/storyboard/" + str(id))
