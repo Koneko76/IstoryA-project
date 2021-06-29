@@ -52,12 +52,12 @@ def index(request):
         elif type == "Romance":
             path_run = "run1-romance-124M"
         else:
-            path_run = "run1-fantasy-124M"
+            path_run = "run1-western-124M"
 
         tf.reset_default_graph()
         sess = gpt2.start_tf_sess()
         gpt2.load_gpt2(sess, checkpoint_dir=path, run_name=path_run)
-        result = gpt2.generate(sess, checkpoint_dir=path, run_name=path_run, prefix=formCreateStory.cleaned_data["start"], return_as_list=True, length=512)[0]
+        result = gpt2.generate(sess, checkpoint_dir=path, run_name=path_run, prefix=formCreateStory.cleaned_data["start"], return_as_list=True, length=256)[0]
         result = removeLastSentence(result)
 
         return render(request, 'main/first_text_generation.html', locals())
@@ -131,15 +131,15 @@ def homePage(request):
         tf.reset_default_graph()
         sess = gpt2.start_tf_sess()
 
-        if(length > 512):
-            length = 512;
+        if(length > 256):
+            length = 256;
 
         if type == "Fantasy":
             path_run = "run1-fantasy-124M"
         elif type == "Romance":
             path_run = "run1-romance-124M"
         else:
-            path_run = "run1-fantasy-124M"
+            path_run = "run1-western-124M"
 
         gpt2.load_gpt2(sess, checkpoint_dir=path, run_name=path_run)
         result_text_generation = gpt2.generate(sess, checkpoint_dir=path, run_name=path_run, prefix=formCreateStoryHome.cleaned_data["start"], return_as_list=True , length=length)[0]
@@ -155,15 +155,15 @@ def homePage(request):
         tf.reset_default_graph()
         sess = gpt2.start_tf_sess()
 
-        if(length > 512):
-            length = 512;
+        if(length > 256):
+            length = 256;
 
         if type == "Fantasy":
             path_run = "run1-fantasy-124M"
         elif type == "Romance":
             path_run = "run1-romance-124M"
         else:
-            path_run = "run1-fantasy-124M"
+            path_run = "run1-western-124M"
 
         gpt2.load_gpt2(sess, checkpoint_dir=path, run_name=path_run)
         result_text_generation = gpt2.generate(sess, checkpoint_dir=path, run_name=path_run, prefix=formRegenerateValidation.cleaned_data["start"], return_as_list=True , length=length)[0]
@@ -236,8 +236,8 @@ def createPage(request, id):
 
     if formRegenerate.is_valid():
         regenerate_length = formRegenerate.cleaned_data["regenerate_length"]
-        if(regenerate_length > 512):
-            regenerate_length = 512;
+        if(regenerate_length > 256):
+            regenerate_length = 256;
         tf.reset_default_graph()
         sess = gpt2.start_tf_sess()
         regenerate_type = formRegenerate.cleaned_data["regenerate_type"]
@@ -246,7 +246,7 @@ def createPage(request, id):
         elif regenerate_type == "Romance":
             path_run = "run1-romance-124M"
         else:
-            path_run = "run1-fantasy-124M"
+            path_run = "run1-western-124M"
 
         gpt2.load_gpt2(sess, checkpoint_dir=path, run_name=path_run)
         result_text_generation = gpt2.generate(sess, checkpoint_dir=path, run_name=path_run, prefix=formRegenerate.cleaned_data["regenerate_start"], return_as_list=True , length=regenerate_length)[0]
@@ -320,15 +320,15 @@ def createOrderPage(request, id):
         tf.reset_default_graph()
         sess = gpt2.start_tf_sess()
 
-        if(regenerate_length > 512):
-            regenerate_length = 512;
+        if(regenerate_length > 256):
+            regenerate_length = 256;
 
         if regenerate_type == "Fantasy":
             path_run = "run1-fantasy-124M"
         elif regenerate_type == "Romance":
             path_run = "run1-romance-124M"
         else:
-            path_run = "run1-fantasy-124M"
+            path_run = "run1-western-124M"
 
         gpt2.load_gpt2(sess, checkpoint_dir=path, run_name=path_run)
         result_text_generation = gpt2.generate(sess, checkpoint_dir=path, run_name=path_run, prefix=formRegenerate.cleaned_data["regenerate_start"], return_as_list=True , length=regenerate_length)[0]
@@ -526,6 +526,8 @@ def wallPage(request):
     publish_user_infos = []
     publish_like_infos = []
     publish_fav_infos = []
+    list_storyboard = []
+    list_profil_picture = []
     list_storyboard_published = storyboard.objects.filter(publish_statut=1)
 
     for publish_unit in list_storyboard_published:
@@ -536,7 +538,19 @@ def wallPage(request):
         publish_fav_infos.append(publish_infos_fav)
         publish_user_infos.append(user_infos.username)
 
-    infos = zip(list_storyboard_published, publish_user_infos, publish_like_infos, publish_fav_infos)
+    infos = zip(list_storyboard_published, publish_user_infos, publish_like_infos, publish_fav_infos, list_profil_picture)
+
+    for storyboard_infos in list_storyboard_published:
+        list_storyboard.append(storyboard_infos.id)
+
+    for current_storyboard in list_storyboard:
+        try:
+            current_picture = storyboard_picture.objects.get(case_id=1, storyboard=current_storyboard)
+            list_profil_picture.append(current_picture.picture)
+        except:
+            list_profil_picture.append("https://i.imgur.com/oYiTqum.jpg")
+
+    infos = zip(list_storyboard_published, publish_user_infos, publish_like_infos, publish_fav_infos, list_profil_picture)
 
     return render(request, 'main/wall.html', locals())
 
