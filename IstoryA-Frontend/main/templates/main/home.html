@@ -37,10 +37,10 @@
             <ul class="cards">
                 <li>
                     <div href="" class="card">
-                        {% if picture != "https://i.imgur.com/oYiTqum.jpg" %}
+                        {% if picture != "bear.jpg" %}
                             <a href="/storyboard/{{ storyboard.id }}"><img src="data:image/png;base64,{{picture|binary_to_image}}" class="card-image" alt="" /></a>
                         {% else %}
-                            <a href="/storyboard/{{ storyboard.id }}"><img src="https://i.imgur.com/oYiTqum.jpg" class="card-image" alt="" /></a>
+                            <a href="/storyboard/{{ storyboard.id }}"><img src="{% static 'main//pictures/site/bear.jpg' %}" class="card-image" alt="" /></a>
                         {% endif %}
                         <div class="card-overlay">
                             <div class="card-header">
