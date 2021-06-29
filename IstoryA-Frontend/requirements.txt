@@ -4,3 +4,4 @@ numpy==1.20.3
 pandas==1.2.4
 django-debug-toolbar==3.2.1
 tensorflow==1.15
+nltk==3.6.2
