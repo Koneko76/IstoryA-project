@@ -6,3 +6,5 @@ django-debug-toolbar==3.2.1
 tensorflow==1.15
 nltk==3.6.2
 fpdf==1.7.2
+pillow==8.2.0
+networkx==2.5.1
