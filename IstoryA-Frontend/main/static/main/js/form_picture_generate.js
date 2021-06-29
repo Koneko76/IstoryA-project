@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    var ip = 'http://192.168.1.54:5000/picture_generation'
+    var ip = 'http://10.0.2.97:5000/picture_generation'
     $("#submit-generate-picture-1").click(function () {
         var x = $("#generate-picture-1").serializeArray();
         if(x[0].value == "choose"){
