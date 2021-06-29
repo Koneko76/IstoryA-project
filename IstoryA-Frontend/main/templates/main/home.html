@@ -28,8 +28,10 @@
     <div class="line line-title-list-storyboard-home"></div>
 
     <div class="content-login ">
-        <a href="/wall" class="button-right-one"><span>IstoryA's Wall</span></a>
-        <a href="" class="button-right-two" data-toggle="modal" data-target="#logout"><span>Logout</span></a>
+        <div class="right-button">
+            <a href="/wall" class="button-right-one"><span>IstoryA's Wall</span></a>
+            <a href="" class="button-right-two" data-toggle="modal" data-target="#logout"><span>Logout</span></a>
+        </div>
     </div>
 
     <div class="storyboard-list-home">
@@ -89,7 +91,7 @@
                             {{ formCreateStoryHome.start }}
                         </div>
                         <div class="form-group">
-                            <label>Length of your storyboard (max = 512 words)</label>
+                            <label>Length of your storyboard (max = 256 words)</label>
                             {{ formCreateStoryHome.length }}
                         </div>
                     </div>

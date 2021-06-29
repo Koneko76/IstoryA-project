@@ -36,7 +36,7 @@
                      <div class="storyboard-picture">
                           {% for key, value in list_picture_save_and_case_id.items %}
                               {% if case == key and value %}
-                                    <img class="picture-storyboard" src="data:image/png;base64,{{value|binary_to_image}}" alt="picture-storyboard-{{case}}">
+                                    <img class="picture-storyboard-case" src="data:image/png;base64,{{value|binary_to_image}}" alt="picture-storyboard-{{case}}">
                               {% endif %}
                           {% endfor %}
                      </div>
@@ -114,7 +114,7 @@
                             {{ formRegenerate.regenerate_start }}
                         </div>
                         <div class="form-group">
-                            <label>Length of your story (max = 512 words)</label>
+                            <label>Length of your story (max = 256 words)</label>
                             {{ formRegenerate.regenerate_length }}
                         </div>
                     </div>

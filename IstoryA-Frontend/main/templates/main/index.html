@@ -28,7 +28,8 @@
             <form method="POST" id="get-text-generation" action="{% url 'index' %}">
                 {% csrf_token %}
                 <h2 class="subtitle">Select your genre</h2>
-                {{ formCreateStory.as_p }}
+                {{ formCreateStory.type }}
+                {{ formCreateStory.start }}
                 <div class="content-login content-login-first-generation">
                     <button type="submit" name="submit" id="submit">Launch</button>
                 </div>

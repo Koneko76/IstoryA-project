@@ -21,4 +21,4 @@ def hello():
               str(request.args.get('case_id')),
               str(request.args.get('owner_id')))
 
-    return 'Hello, CC'
+    return 'OK'
