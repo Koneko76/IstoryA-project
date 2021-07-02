@@ -516,8 +516,6 @@ def updateCaseOrderStoryboard(request):
     text = request.POST.get("text")
     response_data = {}
 
-    print(storyboard_id, case_id, text_order, "text", text)
-
     current_storyboard_text = storyboard_text.objects.get(text=str(text), storyboard_id=storyboard_id, case_id=case_id, owner_id=request.user.id)
     current_storyboard_text.text_order = text_order
     current_storyboard_text.save()
