@@ -313,7 +313,7 @@ def createOrderPage(request, id):
             if length == case:
                 dict_text[case].append(id_text)
 
-    update_path = "/update_storyboard/" + str(id)
+    update_path_reorder = "/update_storyboard_reorder/" + str(id)
     overview_path = "/storyboard/" + str(id)
     create_path = "/create/" + str(id)
 
@@ -367,6 +367,18 @@ def updateStoryboard(request, id):
     current_storyboard.save()
 
     path_render = "/create/" + str(id)
+    return redirect(path_render)
+
+@login_required
+def updateReorderStoryboard(request, id):
+    result_text_generation = request.session.get('result_text_generation')
+
+    current_storyboard = storyboard.objects.get(id=id, owner_id=request.user.id)
+    current_storyboard.last_text = result_text_generation
+    current_storyboard.update_date = timezone.now()
+    current_storyboard.save()
+
+    path_render = "/order_storyboard/" + str(id)
     return redirect(path_render)
 
 @login_required
@@ -503,6 +515,8 @@ def updateCaseOrderStoryboard(request):
     text_order = int(request.POST.get("text_order")) + 1
     text = request.POST.get("text")
     response_data = {}
+
+    print(storyboard_id, case_id, text_order, "text", text)
 
     current_storyboard_text = storyboard_text.objects.get(text=str(text), storyboard_id=storyboard_id, case_id=case_id, owner_id=request.user.id)
     current_storyboard_text.text_order = text_order

@@ -20,7 +20,7 @@
    <div class="shadow-title parallax-top-shadow">IstoryA</div>
 
    <div class="content-login">
-       <a href="{{ update_path }}" class="button-left-one"><span>Save</span></a>
+       <a href="{{ update_path_reorder }}" class="button-left-one"><span>Save</span></a>
        <a href="{{ overview_path }}" class="button-left-two"><span>Overview</span></a>
        <a href="/home" class="button-left-three"><span>Home</span></a>
        <a href="{{ create_path }}" class="button-left-four"><span>Text Organization</span></a>
@@ -81,8 +81,8 @@
             <div id="wrapper-filter">
                 <ul id="filter-bar">
                     <span class="pill"></span>
-                    <li class="filter-option option-1" id="Generated" data-target="option-1">Generated texts</li>
-                    <li class="filter-option option-2 active" id="Saved" data-target="option-2">Saved texts</li>
+                    <li class="filter-option option-1 active" id="Generated" data-target="option-1">Generated texts</li>
+                    <li class="filter-option option-2" id="Saved" data-target="option-2">Saved texts</li>
                     <i class="fas fa-sync regen" data-toggle="modal" data-target="#regenerate-text"></i>
                 </ul>
             </div>
@@ -196,3 +196,5 @@
 <script src="{% static 'main/js/animation.js' %}"></script>
 
 {% endblock %}
+
+re.split("(?<!\w\.\w.)(?<![A-Z][a-z]\.)(?<=\.|\?)\s", result_text_generation)

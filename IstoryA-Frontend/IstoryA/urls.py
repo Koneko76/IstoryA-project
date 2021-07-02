@@ -32,6 +32,7 @@ urlpatterns = [
     path('create/<int:id>', views.createPage, name="create"),
     path('order_storyboard/<int:id>', views.createOrderPage, name="create_order"),
     path('update_storyboard/<int:id>', views.updateStoryboard, name="update"),
+    path('update_storyboard_reorder/<int:id>', views.updateReorderStoryboard, name="update_reorder"),
     path('storyboard/<int:id>', views.storyboardPage, name="storyboard"),
     path('storyboard_published/<int:id>', views.storyboardPublishedPage, name="storyboard_published"),
     path('delete/<int:id>', views.deleteStoryboard, name="delete"),
