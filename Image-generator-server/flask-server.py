@@ -5,11 +5,11 @@ import sys
 app = Flask(__name__)
 
 @app.route('/')
-def hello_world():
-    return 'Hello, World!'
+def ping():
+    return 'OK!'
 
 @app.route('/picture_generation', methods=['GET', 'POST'])
-def hello():
+def generate_picture():
 
     print(str(request.args.get('text')))
 
