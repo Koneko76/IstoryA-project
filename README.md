@@ -32,22 +32,27 @@ This repo contains Website source code, datasets, exploration notebooks and flas
 
 ### Website environment & text generation (Django)
 
-After downloading the repository, it is important to create a **python environment** to the root project: ```python3 -m venv .venv```.
+> After downloading the repository, it is important to create a **python environment** to the root project: ```python3 -m venv .venv```.
 
-**Update** your python package manager (pip): ```pip install --upgrade pip```
+> **Update** your python package manager (pip): ```pip install --upgrade pip```
 
-Download all the project's **requirements** with the following: ```pip install -r requirements.txt```
+> Download all the Django **requirements** with the following: ```pip install -r /IstoryA-project/IstoryA-Frontend/requirements.txt```
 
-After installing the NLP library NLTK, you have to download the **necessaries packages**: ```python -m nltk.downloader popular```
+> After installing the NLP library NLTK, you have to download the **necessaries packages**: ```python -m nltk.downloader popular```
 
-Then you have to set up the **SQlite database**: ```python manage.py makemigrations main``` and finish by creating the database: ```python manage.py migrate```
+> Then you have to set up the **SQlite database**: ```python manage.py makemigrations main``` and finish by creating the database: ```python manage.py migrate```
 
-Please check that your local IP or your server IP is in the ALLOWED_HOSTS in the file: ```/IstoryA-project/IstoryA-Frontend/IstoryA/settings.py```
+> Please check that your local IP or your server IP is in the ALLOWED_HOSTS in the file: ```/IstoryA-project/IstoryA-Frontend/IstoryA/settings.py```
 
-To launch the web site server you just have to enter the following command: ```python manage.py runserver 0.0.0.0:80```
+> To launch Django server you just have to enter the following command: ```python manage.py runserver 0.0.0.0:80```
 
 ### Image generation (Flask)
 
+> Download all the front **requirements** with the following: ```pip install -r IstoryA-project/Image-generator-server/requirements.txt```
+
+> Expose to PATH environment Flask app: ```export FLASK_APP=flask-server.py```
+
+> To launch Flask server you just have to enter the following command: ```flask run --host=0.0.0.0```
 
 ## Authors : 
 <p>Clément Delaunay (https://github.com/Koneko76)</p>
