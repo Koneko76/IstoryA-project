@@ -46,8 +46,6 @@ for epoch in range(EPOCHS):
             with open(image_upscaled_fn, 'rb') as f:
                 data = base64.b64encode(f.read())
                 response = requests.post("http://10.0.1.158:80/update_picture_by_flask/",
-                #response = requests.post("http://192.168.1.14:8000/update_picture_by_flask/",
-                #response = requests.post("http://127.0.0.1:8000/update_picture_by_flask/",
                                          data={"pictureB64": data, "storyboard_id": sys.argv[2], "case_id": sys.argv[3], "owner_id": sys.argv[4]})
 
             try:
